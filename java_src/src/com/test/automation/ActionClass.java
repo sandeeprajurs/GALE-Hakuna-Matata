@@ -52,7 +52,14 @@ public class ActionClass {
 		  case "PAUSE":
 			  ActionMethods.pause(driver, actionName, testData,testReport);
 			  break;
-		 
+			  
+		  case "GETPAGETITLE":
+		      ActionMethods.getPageTitle(driver, actionName, locatorName, locatorData, testData, testReport);
+		      break;
+		      
+		  case "GETPAGEURL":
+			  ActionMethods.getPageURL(driver, actionName, locatorName, locatorData, testData, testReport);
+		      break;
 		}
 		
 	}

@@ -3,11 +3,11 @@ package com.test.automation;
 import java.util.Properties;
 
 public class Property {
-	static Properties configProperies = new Properties();
+	static Properties configProperies= new Properties(); 
 	static String filePath = "config.properties";
 	static {
-		
 		try{
+//			/System.out.println(filePath);
 			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 			java.io.InputStream input = classLoader.getResourceAsStream(filePath);
 			configProperies.load(input);

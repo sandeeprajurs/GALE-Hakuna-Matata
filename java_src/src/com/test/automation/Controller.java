@@ -17,8 +17,7 @@ public class Controller extends HttpServlet{
 	private static final long serialVersionUID = 1L;
    
     public Controller() {
-        super();
-        // TODO Auto-generated constructor stub
+    	
         Property.getPropertyValue("CHROMEDRIVERPATH");
     }
 
@@ -31,7 +30,7 @@ public class Controller extends HttpServlet{
     	String[] queryItems=queryString.split("&");
     	System.out.println("in process");
         Model.triggerSelenium(queryItems[0],queryItems[1]);
-    }
+        }
     	      
     }
     
