@@ -204,4 +204,33 @@ public class ActionMethods {
 		}
 		
 	}
+	
+	public static void getPageTitle(WebDriver driver,String action,String locatorName,String locatorData,String testdata,ExtentTest testReport){
+		String title=driver.getTitle();
+		if(!testdata.equals(null))
+		{
+			if(title.equals(testdata))
+				testReport.log(LogStatus.PASS,"Actual Page Title:"+title+" :: Expected Page Title:"+testdata);	
+			else
+				testReport.log(LogStatus.PASS,"Actual Page Title:"+title+" :: Expected Page Title:"+testdata);
+			
+		}
+		else
+			testReport.log(LogStatus.INFO,"Page Title:"+title);
+	}
+	
+	public static void getPageURL(WebDriver driver,String action,String locatorName,String locatorData,String testdata,ExtentTest testReport){
+		String url=driver.getCurrentUrl();
+		if(!testdata.equals(null))
+		{
+			if(url.equals(testdata))
+				testReport.log(LogStatus.PASS,"Actual Page URL:"+url+" :: Expected Page URL:"+testdata);	
+			else
+				testReport.log(LogStatus.PASS,"Actual Page URL:"+url+" :: Expected Page URL:"+testdata);
+			
+		}
+		else
+			testReport.log(LogStatus.INFO,"Page URL:"+url);
+	}
+	
 }
