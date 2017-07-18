@@ -60,6 +60,7 @@ public class ActionClass {
 		  case "GETPAGEURL":
 			  ActionMethods.getPageURL(driver, actionName, locatorName, locatorData, testData, testReport);
 		      break;
+		      
 		}
 		
 	}

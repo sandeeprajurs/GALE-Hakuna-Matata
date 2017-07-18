@@ -232,4 +232,5 @@ public class ActionMethods {
 		else
 			testReport.log(LogStatus.INFO,"Page URL:"+url);
 	}
+	
 }
