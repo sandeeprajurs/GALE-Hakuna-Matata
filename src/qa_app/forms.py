@@ -11,7 +11,11 @@ ACTION_CHOICES = [
     ["SelectFromDropDown", "Select From Drop Down"],
     ["SelectFromLookUp", "Select From Look Up"],
     ["URL", "URL"],
-    ["PAUSE", "PAUSE"]
+    ["PAUSE", "PAUSE"],
+	["LOOP", "Loop"],
+	["PRESENCEOFELEMENT", "Presence Of Element"], 
+	["GETPAGETITLE", "Get Page Title"],
+	["GETPAGEURL", "Get Page URL"]
 ]
 
 LOCATORS_CHOICES = [
