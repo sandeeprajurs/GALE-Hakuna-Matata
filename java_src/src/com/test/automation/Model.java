@@ -153,11 +153,12 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 			try {
 					
 				NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
-				SmbFile dir = new SmbFile(url, auth);
+				SmbFile dir = new SmbFile(url+dateVar + usecase_id, auth);
+				dir.mkdir();
 				testReport.log(LogStatus.INFO,"In samba share");
-				SmbFile remoteFile =  new SmbFile(url, auth);
+				SmbFile remoteFile =  new SmbFile(url+dateVar + usecase_id, auth);
 				SmbFileOutputStream out = new SmbFileOutputStream(remoteFile);
-				FileInputStream fis = new FileInputStream(initialPath);
+				FileInputStream fis = new FileInputStream(path);
 				out.write(IOUtils.toByteArray(fis));
 				out.close();
 //				for (SmbFile f : dir.listFiles())
