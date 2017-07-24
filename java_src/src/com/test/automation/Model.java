@@ -141,36 +141,34 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 				
 				
 			}
+			 String url = "smb://ec2-35-161-177-204.us-west-2.compute.amazonaws.com//Share//";
+			try {
+					
+				NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
+				SmbFile dir = new SmbFile(url, auth);
+				testReport.log(LogStatus.INFO,"In samba share");
+				for (SmbFile f : dir.listFiles())
+				{
+				  testReport.log(LogStatus.INFO,f.getName());
+			      System.out.println(f.getName());
+					    
+				}
+				}
+				catch (MalformedURLException e1) {
+				// TODO Auto-generated catch block
+				  e1.printStackTrace();
+				} catch (SmbException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
 			eReport.flush(); 
 		}  
 	} catch (SQLException e1) {
 		e1.printStackTrace();
 	}
 	 
-     finally{
-    	
-
-    	 String url = "smb://ec2-35-161-177-204.us-west-2.compute.amazonaws.com//Share//";
-		try {
-			
-			NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
-			SmbFile dir = new SmbFile(url, auth);
-			for (SmbFile f : dir.listFiles())
-			{
-			    System.out.println(f.getName());
-			}
-		}
-		 catch (MalformedURLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (SmbException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    	
-    	 
-    	 
-    	 
+     finally{ 
     	 ucidl=null;
     	 try {
      		// inserting file pathe, usecase id and timstamp to db
