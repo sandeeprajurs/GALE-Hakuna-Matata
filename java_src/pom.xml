@@ -202,5 +202,12 @@
     <version>2.6.0</version>
 </dependency>
 
+<!-- https://mvnrepository.com/artifact/org.samba.jcifs/jcifs -->
+<dependency>
+    <groupId>org.samba.jcifs</groupId>
+    <artifactId>jcifs</artifactId>
+    <version>1.2.19</version>
+</dependency>
+
 </dependencies>
 </project>
