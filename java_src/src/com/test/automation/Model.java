@@ -1,6 +1,7 @@
 package com.test.automation;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -19,6 +20,10 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import com.relevantcodes.extentreports.ExtentReports;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
+
+import jcifs.smb.NtlmPasswordAuthentication;
+import jcifs.smb.SmbException;
+import jcifs.smb.SmbFile;
 
 
 public class Model{
@@ -143,6 +148,29 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 	}
 	 
      finally{
+    	
+
+    	 String url = "smb://ec2-35-161-177-204.us-west-2.compute.amazonaws.com//Share//";
+		try {
+			
+			NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
+			SmbFile dir = new SmbFile(url, auth);
+			for (SmbFile f : dir.listFiles())
+			{
+			    System.out.println(f.getName());
+			}
+		}
+		 catch (MalformedURLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (SmbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+    	 
+    	 
+    	 
     	 ucidl=null;
     	 try {
      		// inserting file pathe, usecase id and timstamp to db
