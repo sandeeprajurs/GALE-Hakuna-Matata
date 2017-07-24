@@ -1,7 +1,11 @@
 package com.test.automation;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.poi.util.IOUtils;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -24,6 +30,7 @@ import com.relevantcodes.extentreports.LogStatus;
 import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbException;
 import jcifs.smb.SmbFile;
+import jcifs.smb.SmbFileOutputStream;
 
 
 public class Model{
@@ -43,6 +50,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 	ExtentReports eReport = null;
 	ExtentTest testReport;
 	String dateVar = null;
+	String initialPath=null;
 	String path = null;
 	List<String> ucidl=new ArrayList<String>();
 	int usecase_id = 0;
@@ -114,8 +122,8 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 		file.mkdir();
 		
 		eReport=new ExtentReports(Property.getPropertyValue("REPORTFOLDER") + dateVar + usecase_id + "\\" + useCaseName+usecase_id + ".html");
-
-		path=Property.getPropertyValue("REPORTFOLDER")+dateVar+usecase_id+"//"+useCaseName+usecase_id+".html";
+        initialPath=Property.getPropertyValue("REPORTFOLDER")+dateVar+usecase_id;
+		path=initialPath+"//"+useCaseName+usecase_id+".html";
 		testReport=eReport.startTest(useCaseName);
 		    
 	    	stmt=c.createStatement(); 
@@ -147,17 +155,30 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 				NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
 				SmbFile dir = new SmbFile(url, auth);
 				testReport.log(LogStatus.INFO,"In samba share");
-				for (SmbFile f : dir.listFiles())
-				{
-				  testReport.log(LogStatus.INFO,f.getName());
-			      System.out.println(f.getName());
-					    
-				}
+				SmbFile remoteFile =  new SmbFile(url, auth);
+				SmbFileOutputStream out = new SmbFileOutputStream(remoteFile);
+				FileInputStream fis = new FileInputStream(initialPath);
+				out.write(IOUtils.toByteArray(fis));
+				out.close();
+//				for (SmbFile f : dir.listFiles())
+//				{
+//				  testReport.log(LogStatus.INFO,f.getName());
+//			      System.out.println(f.getName()); 
+//				}
 				}
 				catch (MalformedURLException e1) {
 				// TODO Auto-generated catch block
 				  e1.printStackTrace();
 				} catch (SmbException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (UnknownHostException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
