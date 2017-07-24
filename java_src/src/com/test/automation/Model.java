@@ -149,13 +149,14 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 				
 				
 			}
+			  eReport.flush();
 			 String url = "smb://ec2-35-161-177-204.us-west-2.compute.amazonaws.com//Share//";
 			try {
 					
 				NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
 				SmbFile dir = new SmbFile(url+dateVar + usecase_id, auth);
 				dir.mkdir();
-				testReport.log(LogStatus.INFO,"In samba share");
+				
 				SmbFile remoteFile =  new SmbFile(url+dateVar + usecase_id, auth);
 				SmbFileOutputStream out = new SmbFileOutputStream(remoteFile);
 				FileInputStream fis = new FileInputStream(path);
@@ -184,7 +185,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 					e.printStackTrace();
 				}
 			
-			eReport.flush(); 
+			 
 		}  
 	} catch (SQLException e1) {
 		e1.printStackTrace();
