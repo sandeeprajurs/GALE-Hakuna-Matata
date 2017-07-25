@@ -4,8 +4,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.UnknownHostException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -152,19 +157,15 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 			  eReport.flush();
 			 String url = "smb://ec2-35-161-177-204.us-west-2.compute.amazonaws.com//Share//";
 			try {
-					
 				NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
-				SmbFile dir = new SmbFile(url+dateVar + usecase_id, auth);
+				SmbFile dir = new SmbFile(url+dateVar +usecase_id, auth);	
 				dir.mkdir();
-				SmbFile inputfile =  new SmbFile(path, auth);
-				SmbFile remoteFile =  new SmbFile(url+dateVar + usecase_id+"//"+useCaseName+usecase_id+".html", auth);
-				remoteFile.createNewFile();
-				inputfile.copyTo(remoteFile);
-//				for (SmbFile f : dir.listFiles())
-//				{
-//				  testReport.log(LogStatus.INFO,f.getName());
-//			      System.out.println(f.getName()); 
-//				}
+				Path source = Paths.get(path);
+				SmbFile newFile = new SmbFile(url+dateVar + usecase_id+"//"+useCaseName+usecase_id+".html",auth);
+				try (OutputStream out = newFile.getOutputStream())
+				{
+				    Files.copy(source, out);
+				}
 				}
 				catch (MalformedURLException e1) {
 				// TODO Auto-generated catch block
