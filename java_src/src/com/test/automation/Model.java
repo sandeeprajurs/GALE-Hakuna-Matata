@@ -156,9 +156,9 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 				NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
 				SmbFile dir = new SmbFile(url+dateVar + usecase_id, auth);
 				dir.mkdir();
-				File f=new File(path);
-				SmbFile inputfile =  new SmbFile(f.getAbsolutePath(), auth);
-				SmbFile remoteFile =  new SmbFile(url+dateVar + usecase_id, auth);
+				SmbFile inputfile =  new SmbFile(path, auth);
+				SmbFile remoteFile =  new SmbFile(url+dateVar + usecase_id+"//"+useCaseName+usecase_id+".html", auth);
+				remoteFile.createNewFile();
 				inputfile.copyTo(remoteFile);
 //				for (SmbFile f : dir.listFiles())
 //				{
