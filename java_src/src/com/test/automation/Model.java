@@ -163,7 +163,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 				SmbFile dir = new SmbFile(url+dateVar +usecase_id, auth);	
 				dir.mkdir();
 				Path source = Paths.get(path);
-				SmbFile newFile = new SmbFile(sourcepath,auth);
+				SmbFile newFile = new SmbFile(url+sourcepath,auth);
 				try (OutputStream out = newFile.getOutputStream())
 				{
 				    Files.copy(source, out);
@@ -193,6 +193,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
     	 try {
      		// inserting file pathe, usecase id and timstamp to db
     		 driver.close();
+    		 System.out.println(sourcepath);
  			 pStmt=c.prepareStatement("INSERT INTO qa_app_reports (report,use_case_id,time) VALUES (?,?,?)");
  			 pStmt.setString(1,sourcepath);
  			 pStmt.setInt(2,usecase_id);
