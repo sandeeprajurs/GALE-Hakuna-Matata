@@ -156,8 +156,8 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 				NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
 				SmbFile dir = new SmbFile(url+dateVar + usecase_id, auth);
 				dir.mkdir();
-				FileInputStream fis = new FileInputStream(path);
-				SmbFile inputfile =  new SmbFile(fis.toString(), auth);
+				File f=new File(path);
+				SmbFile inputfile =  new SmbFile(f.getAbsolutePath(), auth);
 				SmbFile remoteFile =  new SmbFile(url+dateVar + usecase_id, auth);
 				inputfile.copyTo(remoteFile);
 //				for (SmbFile f : dir.listFiles())
@@ -173,10 +173,8 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} 
-				 catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
+				
+				catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
