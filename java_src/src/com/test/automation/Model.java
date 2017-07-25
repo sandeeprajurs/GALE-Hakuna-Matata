@@ -157,7 +157,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 			}
 			  eReport.flush();
 			 String url = "smb://ec2-35-161-177-204.us-west-2.compute.amazonaws.com//Share//";
-			 sourcepath=url+dateVar + usecase_id+"//"+useCaseName+usecase_id+".html";
+			 sourcepath=dateVar + usecase_id+"//"+useCaseName+usecase_id+".html";
 			try {
 				NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
 				SmbFile dir = new SmbFile(url+dateVar +usecase_id, auth);	
