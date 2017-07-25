@@ -57,6 +57,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 	String dateVar = null;
 	String initialPath=null;
 	String path = null;
+	String sourcepath=null;
 	List<String> ucidl=new ArrayList<String>();
 	int usecase_id = 0;
 	
@@ -156,12 +157,13 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 			}
 			  eReport.flush();
 			 String url = "smb://ec2-35-161-177-204.us-west-2.compute.amazonaws.com//Share//";
+			 sourcepath=url+dateVar + usecase_id+"//"+useCaseName+usecase_id+".html";
 			try {
 				NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
 				SmbFile dir = new SmbFile(url+dateVar +usecase_id, auth);	
 				dir.mkdir();
 				Path source = Paths.get(path);
-				SmbFile newFile = new SmbFile(url+dateVar + usecase_id+"//"+useCaseName+usecase_id+".html",auth);
+				SmbFile newFile = new SmbFile(sourcepath,auth);
 				try (OutputStream out = newFile.getOutputStream())
 				{
 				    Files.copy(source, out);
@@ -192,7 +194,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
      		// inserting file pathe, usecase id and timstamp to db
     		 driver.close();
  			 pStmt=c.prepareStatement("INSERT INTO qa_app_reports (report,use_case_id,time) VALUES (?,?,?)");
- 			 pStmt.setString(1,path);
+ 			 pStmt.setString(1,sourcepath);
  			 pStmt.setInt(2,usecase_id);
  			 pStmt.setString(3,dateVar); 
  			 pStmt.executeUpdate();
