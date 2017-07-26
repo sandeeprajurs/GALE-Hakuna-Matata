@@ -11,7 +11,7 @@
              <table class="table">
                   <thead>
                     <tr>
-                      <th>Test Case Name</th>
+                      <th>Test Cases</th>
                       <th>Reports</th>
                     </tr>
                   </thead>
@@ -20,7 +20,7 @@
                     <tr>
                         <td>{{usecase.use_case_name}}</td>
                         <td>
-                          <button type="button" class="btn btn-primary button-link"><a class="btn-primary" href="{% url 'hakuna_matata:report' usecase.id %}">View Report</a></button>
+                          <a href="{% url 'hakuna_matata:all_report' usecase.id %}">View Report</a>
                         </td>
                     </tr>
                   {% endfor %}
