@@ -60,6 +60,14 @@ public class ActionClass {
 		  case "GETPAGEURL":
 			  ActionMethods.getPageURL(driver, actionName, locatorName, locatorData, testData, testReport);
 		      break;
+		  
+		  case "NAVIGATEBACK":
+			  ActionMethods.navigateBack(driver, testReport);
+			  break;
+			  
+		  case "HOVERON":
+			  ActionMethods.hoverOn(driver, locatorName, locatorData, testReport);
+			  break;
 		      
 		}
 		
