@@ -43,6 +43,15 @@ def reports_view(request, project_id):
     return render(request, "reports_list.html", context)
 
 
+def show_all_reports(request, usecase_id):
+    """Show all reports for a corresponding usecase."""
+    all_reports = Reports.objects.filter(use_case_id=usecase_id)
+    context = {
+        "all_reports": all_reports,
+    }
+    return render(request, "all_reports.html", context)
+
+
 def render_report(request, report_id):
     """Show reports views."""
     report_obj = get_object_or_404(Reports, pk=report_id)

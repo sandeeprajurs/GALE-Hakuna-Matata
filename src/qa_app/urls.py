@@ -15,7 +15,8 @@ urlpatterns = (
     url(r'^add-jobs/(?P<project_id>\d+)$', view=views.add_jobs_view, name="add_jobs"),
     url(r'^(?P<project_id>\d+)/usecases/actions/(?P<usecase_id>\d+)$', view=views.actions_view, name="actions"),
     url(r'^reports/(?P<project_id>\d+)/$', view=views.reports_view, name="reports"),
-    url(r'^report/(?P<report_id>\d+)$', view=views.render_report, name="report"),
+    url(r'^all_report/(?P<usecase_id>\d+)$', view=views.show_all_reports, name="all_report"),
+    url(r'^view_report/(?P<report_id>\d+)$', view=views.render_report, name="view_report"),
     url(r'^add_project/$', views.add_project, name='add_project'),
     url(r'^remove_project/(?P<project_id>\d+)/$', views.remove_project, name='remove_project'),
 )

@@ -12,10 +12,12 @@ ACTION_CHOICES = [
     ["SelectFromLookUp", "Select From Look Up"],
     ["URL", "URL"],
     ["PAUSE", "PAUSE"],
-	["LOOP", "Loop"],
-	["PRESENCEOFELEMENT", "Presence Of Element"], 
-	["GETPAGETITLE", "Get Page Title"],
-	["GETPAGEURL", "Get Page URL"]
+    ["LOOP", "Loop"],
+    ["PRESENCEOFELEMENT", "Presence Of Element"],
+    ["GETPAGETITLE", "Get Page Title"],
+    ["GETPAGEURL", "Get Page URL"],
+    ["NAVIGATEBACK", "Navigate Back"],
+    ["HOVERON", "Hoveron"]
 ]
 
 LOCATORS_CHOICES = [
