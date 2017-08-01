@@ -140,7 +140,7 @@ public class ActionMethods {
 		
 	}
 	
-	public static void loop(WebDriver driver,String action,String locator,String input1,String input2,Connection c,ExtentTest testReport){
+	public static void loop(WebDriver driver,String action,String locator,String input1,String input2,Connection c,ExtentTest testReport,int usecase_id){
 		String[] str=input2.split("-");
 		
 		Statement st=null;
@@ -150,7 +150,7 @@ public class ActionMethods {
 	    	 
 	    	 for(int i=0;i<Integer.parseInt(input1);i++){
 	    	 st=c.createStatement();
-	    	 String sqlQuery="SELECT usecase_id, description, action, locators, element_identifier, element_value, seq_id FROM public.\"Actions_Table\" WHERE seq_id BETWEEN '"+str[0]+"' AND '"+str[1]+"' ORDER BY SEQ_ID;";
+	    	 String sqlQuery="SELECT description, action, locators, element_identifier, element_value, seq FROM qa_app_action WHERE use_case_id = "+usecase_id+" AND seq BETWEEN '"+str[0]+"' AND '"+str[1]+"' ORDER BY seq;";
 	    	 rs = st.executeQuery(sqlQuery);
 	    	 ActionClass ac=new ActionClass();
 	    	 while(rs.next()){
@@ -159,7 +159,7 @@ public class ActionMethods {
 				String locators=rs.getString("locators");
 				String locatorName=rs.getString("element_identifier");
 				String testData=rs.getString("element_value");
-				ac.callActionMethods(driver,actionType,locators,locatorName,testData,c,testReport);
+				ac.callActionMethods(driver,actionType,locators,locatorName,testData,c,testReport,usecase_id);
 	    	 }
 	    	 }
 	     }

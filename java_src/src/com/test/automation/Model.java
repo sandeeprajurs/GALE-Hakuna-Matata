@@ -151,7 +151,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 				String testData=rs.getString("element_value");
 				String msg=desc+action+locators+locatorName+testData;
 				testReport.log(LogStatus.INFO,msg);
-				ac.callActionMethods(driver,action,locators,locatorName,testData,c,testReport);
+				ac.callActionMethods(driver,action,locators,locatorName,testData,c,testReport,usecase_id);
 				
 				
 			}
