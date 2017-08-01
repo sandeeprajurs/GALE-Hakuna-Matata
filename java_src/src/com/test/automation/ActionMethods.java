@@ -9,6 +9,7 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -20,7 +21,7 @@ public class ActionMethods {
    
 	public static void clickit(WebDriver driver,String action,String locatorName,String locatorData,ExtentTest testReport){
 		try {
-			WebDriverWait wait=new WebDriverWait(driver,60);
+			WebDriverWait wait=new WebDriverWait(driver,10);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
 			driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).click();
 		} catch (Exception e) {
@@ -35,7 +36,7 @@ public class ActionMethods {
 	}
 	public static void sendkeys(WebDriver driver,String action,String locatorName,String locatorData,String testdata,ExtentTest testReport){
 		try {
-			WebDriverWait wait=new WebDriverWait(driver,60);
+			WebDriverWait wait=new WebDriverWait(driver,10);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
 			driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).sendKeys(testdata);
 		} catch (Exception e) {
@@ -51,7 +52,7 @@ public class ActionMethods {
 	public static void sendDynamickeys(WebDriver driver,String action,String locatorName,String locatorData,String testdata,ExtentTest testReport){
 		String tempData = null;
 		try {
-			WebDriverWait wait=new WebDriverWait(driver,60);
+			WebDriverWait wait=new WebDriverWait(driver,10);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
 			tempData=new SimpleDateFormat("yyMMddHHmmss").format(new java.util.Date());
 			if(testdata==null){
@@ -81,7 +82,7 @@ public class ActionMethods {
 	
 	public static void dropdown(WebDriver driver,String action,String locatorName,String locatorData,String dropdownvalue,ExtentTest testReport){
 		try {
-			WebDriverWait wait=new WebDriverWait(driver,60);
+			WebDriverWait wait=new WebDriverWait(driver,10);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));	
 		    new Select(driver.findElement(new LocatorClass().getLocator(locatorName,locatorData))).selectByValue(dropdownvalue);
 		} catch (Exception e) {
@@ -99,7 +100,7 @@ public class ActionMethods {
 		try {
 			String[] str=locatorData.split(",");
 			
-			WebDriverWait wait=new WebDriverWait(driver,60);
+			WebDriverWait wait=new WebDriverWait(driver,10);
 			wait.until(ExpectedConditions.visibilityOf(driver.findElement(new LocatorClass().getLocator(locatorName,str[0]))));	
 			WebElement webElement = driver.findElement(new LocatorClass().getLocator(locatorName,str[0]));
 			webElement.sendKeys(Character.toString(lookupValue.charAt(0)));
@@ -212,7 +213,7 @@ public class ActionMethods {
 			if(title.equals(testdata))
 				testReport.log(LogStatus.PASS,"Actual Page Title:"+title+" :: Expected Page Title:"+testdata);	
 			else
-				testReport.log(LogStatus.PASS,"Actual Page Title:"+title+" :: Expected Page Title:"+testdata);
+				testReport.log(LogStatus.FAIL,"Actual Page Title:"+title+" :: Expected Page Title:"+testdata);
 			
 		}
 		else
@@ -226,11 +227,43 @@ public class ActionMethods {
 			if(url.equals(testdata))
 				testReport.log(LogStatus.PASS,"Actual Page URL:"+url+" :: Expected Page URL:"+testdata);	
 			else
-				testReport.log(LogStatus.PASS,"Actual Page URL:"+url+" :: Expected Page URL:"+testdata);
+				testReport.log(LogStatus.FAIL,"Actual Page URL:"+url+" :: Expected Page URL:"+testdata);
 			
 		}
 		else
 			testReport.log(LogStatus.INFO,"Page URL:"+url);
 	}
+	
+    public static void navigateBack(WebDriver driver,ExtentTest testReport){
+		
+		try {
+			driver.navigate().back();
+		} catch (Exception e) {
+
+			testReport.log(LogStatus.FAIL,"Not able to navigate back to original page");
+			testReport.log(LogStatus.FAIL,e.getMessage().toString()+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
+			e.printStackTrace();
+			return;
+		}
+		testReport.log(LogStatus.PASS,"Navigated back successfully");
+	
+    }
+    
+    public static void hoverOn(WebDriver driver,String locatorName,String locatorData,ExtentTest testReport){
+	    try {
+	
+	    	 Actions act= new Actions(driver);
+	    	 WebElement wb=driver.findElement(new LocatorClass().getLocator(locatorName,locatorData));
+	    	 act.moveToElement(wb).perform();
+	    } catch (Exception e) {
+
+			testReport.log(LogStatus.FAIL,"Not able to perform mouseOver operation");
+			testReport.log(LogStatus.FAIL,e.getMessage().toString()+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
+			e.printStackTrace();
+			return;
+		}
+		testReport.log(LogStatus.PASS,"Mouse over operation done successfully");
+	
+ }
 	
 }

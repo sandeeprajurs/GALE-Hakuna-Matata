@@ -16,6 +16,8 @@ ACTION_CHOICES = [
     ["PRESENCEOFELEMENT", "Presence Of Element"],
     ["GETPAGETITLE", "Get Page Title"],
     ["GETPAGEURL", "Get Page URL"],
+    ["NAVIGATEBACK", "Navigate Back"],
+    ["HOVERON", "Hoveron"],
     ["ENTERDYNAMICTEXT", "Enter Dynamic Text"]
 
 ]

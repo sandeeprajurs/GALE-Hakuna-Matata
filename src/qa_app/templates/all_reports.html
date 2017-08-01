@@ -2,25 +2,27 @@
 {% block body %}
 <div class="container">
       <div class="row">
-          {% if usecases %}
+          {% if all_reports %}
            <div class="col-sm-6">
-             <h2>Availble Test Cases</h2>
+             <h2>All Reports</h2>
               <button type="button" class="btn btn-primary button-link" align='center'><a class="btn-primary" href="{% url 'hakuna_matata:projects' %}">Go Back</a></button>
 
             <div class="panel-body row">
              <table class="table">
                   <thead>
                     <tr>
-                      <th>Test Cases</th>
+                      <th>Usecase</th>
                       <th>Reports</th>
                     </tr>
                   </thead>
                   <tbody>
-                  {% for usecase in usecases %}
+                  {% for usecase in all_reports %}
                     <tr>
-                        <td>{{usecase.use_case_name}}</td>
                         <td>
-                          <a href="{% url 'hakuna_matata:all_report' usecase.id %}">View Report</a>
+                          {{usecase.use_case}}
+                        </td>
+                        <td>
+                          <a href="{% url 'hakuna_matata:view_report' usecase.id %}">View</a>
                         </td>
                     </tr>
                   {% endfor %}
