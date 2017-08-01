@@ -8,7 +8,7 @@ import com.relevantcodes.extentreports.ExtentTest;
 
 public class ActionClass {
 	
-	public void callActionMethods(WebDriver driver,String actionName,String locatorName, String locatorData, String testData,Connection c,ExtentTest testReport){
+	public void callActionMethods(WebDriver driver,String actionName,String locatorName, String locatorData, String testData,Connection c,ExtentTest testReport,int usecase_id){
 		
 		
 		switch(actionName.toUpperCase()){
@@ -42,7 +42,7 @@ public class ActionClass {
 			  break;
 		
 		  case "LOOP":
-			  ActionMethods.loop(driver, actionName,locatorName,locatorData, testData,c,testReport);
+			  ActionMethods.loop(driver, actionName,locatorName,locatorData, testData,c,testReport,usecase_id);
 			  break;
 		  
 		  case "PRESENCEOFELEMENT":
