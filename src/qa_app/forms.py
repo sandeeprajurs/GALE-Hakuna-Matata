@@ -17,7 +17,9 @@ ACTION_CHOICES = [
     ["GETPAGETITLE", "Get Page Title"],
     ["GETPAGEURL", "Get Page URL"],
     ["NAVIGATEBACK", "Navigate Back"],
-    ["HOVERON", "Hoveron"]
+    ["HOVERON", "Hoveron"],
+    ["ENTERDYNAMICTEXT", "Enter Dynamic Text"]
+
 ]
 
 LOCATORS_CHOICES = [
