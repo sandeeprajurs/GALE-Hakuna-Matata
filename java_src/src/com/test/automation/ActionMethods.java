@@ -26,9 +26,9 @@ public class ActionMethods {
 			driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).click();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Click operation failed"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
+			testReport.log(LogStatus.FAIL,"Click operation failed"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
-			e.printStackTrace();
+
 			
 			return;
 		}
@@ -41,9 +41,9 @@ public class ActionMethods {
 			driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).sendKeys(testdata);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Not able to input the text"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
+			testReport.log(LogStatus.FAIL,"Not able to input the text"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
-			e.printStackTrace();
+
 			return;
 		}
 		testReport.log(LogStatus.PASS,"Able to input the text");
@@ -73,7 +73,7 @@ public class ActionMethods {
 			testReport.log(LogStatus.FAIL,"Not able to input the text: "+tempData+testdata);	
 			
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
-			e.printStackTrace();
+		
 			return;
 		}
 		
@@ -87,9 +87,9 @@ public class ActionMethods {
 		    new Select(driver.findElement(new LocatorClass().getLocator(locatorName,locatorData))).selectByValue(dropdownvalue);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Not able to select value from dropdown"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
+			testReport.log(LogStatus.FAIL,"Not able to select value from dropdown"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
-			e.printStackTrace();
+		
 			return;
 		}
 		testReport.log(LogStatus.PASS,"Successfully selected ");
@@ -118,9 +118,9 @@ public class ActionMethods {
 		    }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Not able to select value from lookup"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
+			testReport.log(LogStatus.FAIL,"Not able to select value from lookup"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
-			e.printStackTrace();
+		
 			return;
 		}
 		testReport.log(LogStatus.PASS,"Successfully selected ");
@@ -132,8 +132,8 @@ public class ActionMethods {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			testReport.log(LogStatus.FAIL,"Not able to enter URL");
-			testReport.log(LogStatus.FAIL,e.getMessage().toString()+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
-			e.printStackTrace();
+			testReport.log(LogStatus.FAIL,e.getMessage().toString()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
+		
 			return;
 		}
 		testReport.log(LogStatus.PASS,"URL entered successfully");
@@ -165,8 +165,8 @@ public class ActionMethods {
 	     }
 	     catch (SQLException e) {
 	 		// TODO Auto-generated catch block
-	    	testReport.log(LogStatus.FAIL,"Failed to Loop"+e.getMessage()+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
-	 		e.printStackTrace();
+	    	testReport.log(LogStatus.FAIL,"Failed to Loop"+e.getMessage()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
+	 	
 	 		return;
 	 	}	
 	     testReport.log(LogStatus.PASS,"Looped successfully for "+Integer.parseInt(input1)+" times from "+str[0]+" to "+str[1]+"th step");
@@ -183,13 +183,13 @@ public class ActionMethods {
 		}
 		else{
 			
-			testReport.log(LogStatus.FAIL,"Element "+testdata+" is not present"+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));	
+			testReport.log(LogStatus.FAIL,"Element "+testdata+" is not present"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);	
 		}
 		}
 		catch(Exception e){
 			
-			testReport.log(LogStatus.FAIL,"Element is not present or Invalid LocatorValue"+e.getMessage()+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
-			e.printStackTrace();
+			testReport.log(LogStatus.FAIL,"Element is not present or Invalid LocatorValue"+e.getMessage()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
+		
 			return;
 		}
 			
@@ -199,9 +199,10 @@ public class ActionMethods {
 		long number = Long.parseLong(testdata);
 		try {
 			Thread.sleep(number);
+			testReport.log(LogStatus.PASS,"Paused for "+testdata+" sec");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			testReport.log(LogStatus.PASS,"Paused for "+testdata+" sec");
 		}
 		
 	}
@@ -241,8 +242,8 @@ public class ActionMethods {
 		} catch (Exception e) {
 
 			testReport.log(LogStatus.FAIL,"Not able to navigate back to original page");
-			testReport.log(LogStatus.FAIL,e.getMessage().toString()+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
-			e.printStackTrace();
+			testReport.log(LogStatus.FAIL,e.getMessage().toString()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
+			
 			return;
 		}
 		testReport.log(LogStatus.PASS,"Navigated back successfully");
@@ -258,8 +259,8 @@ public class ActionMethods {
 	    } catch (Exception e) {
 
 			testReport.log(LogStatus.FAIL,"Not able to perform mouseOver operation");
-			testReport.log(LogStatus.FAIL,e.getMessage().toString()+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime())));
-			e.printStackTrace();
+			testReport.log(LogStatus.FAIL,e.getMessage().toString()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
+			
 			return;
 		}
 		testReport.log(LogStatus.PASS,"Mouse over operation done successfully");
