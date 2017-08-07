@@ -68,6 +68,10 @@ public class ActionClass {
 		  case "HOVERON":
 			  ActionMethods.hoverOn(driver, locatorName, locatorData, testReport);
 			  break;
+			  
+		  case "CLEARTEXT":
+			  ActionMethods.clearText(driver, locatorName, locatorData, testReport);
+			  break;
 		      
 		}
 		

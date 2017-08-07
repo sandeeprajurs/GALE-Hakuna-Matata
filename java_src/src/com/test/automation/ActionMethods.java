@@ -266,5 +266,19 @@ public class ActionMethods {
 		testReport.log(LogStatus.PASS,"Mouse over operation done successfully");
 	
  }
+    
+    //used to clear text in the text field
+    public static void clearText(WebDriver driver,String locatorName,String locatorData,ExtentTest testReport){
+     try{
+    	WebDriverWait wait=new WebDriverWait(driver,10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
+		driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).clear();
+     }
+     catch(Exception e){
+    	 testReport.log(LogStatus.FAIL,"Not able to clear text");
+     }
+         testReport.log(LogStatus.PASS,"Cleared text successfully");
+		
+    }
 	
 }
