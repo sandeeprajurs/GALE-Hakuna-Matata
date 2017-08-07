@@ -189,16 +189,18 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 			counter++;
 			 
 		}  
+		
+	
 	} catch (SQLException e1) {
 		e1.printStackTrace();
 	}
 	 
      finally{ 
+    	 driver.quit();
     	 counter=1;
     	 ucidl=null;
     	 try {
      		// inserting file pathe, usecase id and timstamp to db
-    		 driver.close();
     		 System.out.println(sourcepath);
  			 pStmt=c.prepareStatement("INSERT INTO qa_app_reports (report,use_case_id,time) VALUES (?,?,?)");
  			 pStmt.setString(1,sourcepath);
