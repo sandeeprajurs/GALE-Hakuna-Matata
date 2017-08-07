@@ -149,7 +149,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 				String locators=rs.getString("locators");
 				String locatorName=rs.getString("element_identifier");
 				String testData=rs.getString("element_value");
-				String msg=desc+action+locators+locatorName+testData;
+				String msg=desc+" :: "+action+" :: "+locators+" :: "+locatorName+" :: "+testData;
 				testReport.log(LogStatus.INFO,msg);
 				ac.callActionMethods(driver,action,locators,locatorName,testData,c,testReport,usecase_id);
 				
