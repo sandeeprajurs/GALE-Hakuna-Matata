@@ -60,6 +60,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 	String sourcepath=null;
 	List<String> ucidl=new ArrayList<String>();
 	int usecase_id = 0;
+	int counter = 1;
 	
 	//Browser triggereded on browser var value
     if(browser.equalsIgnoreCase("firefox")){
@@ -110,7 +111,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 	//no of usecaseid : no of times selenium performs actions
 	try {
 		for(String id:ucidl){
-			usecase_id=Integer.parseInt(id);
+		usecase_id=Integer.parseInt(id);
 		stmt1=c.createStatement();
 		String query1 = "SELECT use_case_name FROM qa_app_usecase Where id="+usecase_id+"; ";
 	    rs1=stmt1.executeQuery(query1);
@@ -124,12 +125,14 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 		
 		
 		//for each usecase new folder for reports is created and html report will be present in it
+		if(counter==1){
 		file = new File(Property.getPropertyValue("REPORTFOLDER")+dateVar+usecase_id);
 		file.mkdir();
 		
 		eReport=new ExtentReports(Property.getPropertyValue("REPORTFOLDER") + dateVar + usecase_id + "\\" + useCaseName+usecase_id + ".html");
         initialPath=Property.getPropertyValue("REPORTFOLDER")+dateVar+usecase_id;
 		path=initialPath+"//"+useCaseName+usecase_id+".html";
+		}
 		testReport=eReport.startTest(useCaseName);
 		    
 	    	stmt=c.createStatement(); 
@@ -157,7 +160,9 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 			}
 			  eReport.flush();
 			 String url = "smb://ec2-35-161-177-204.us-west-2.compute.amazonaws.com//Share//";
+			 if(counter==1){
 			 sourcepath=dateVar + usecase_id+"//"+useCaseName+usecase_id+".html";
+			 }
 			try {
 				NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
 				SmbFile dir = new SmbFile(url+dateVar +usecase_id, auth);	
@@ -181,7 +186,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			
+			counter++;
 			 
 		}  
 	} catch (SQLException e1) {
@@ -189,6 +194,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 	}
 	 
      finally{ 
+    	 counter=1;
     	 ucidl=null;
     	 try {
      		// inserting file pathe, usecase id and timstamp to db
