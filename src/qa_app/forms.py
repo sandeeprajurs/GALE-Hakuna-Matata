@@ -18,7 +18,8 @@ ACTION_CHOICES = [
     ["GETPAGEURL", "Get Page URL"],
     ["NAVIGATEBACK", "Navigate Back"],
     ["HOVERON", "Hoveron"],
-    ["ENTERDYNAMICTEXT", "Enter Dynamic Text"]
+    ["ENTERDYNAMICTEXT", "Enter Dynamic Text"],
+	["CLEARTEXT","Clear Text"],
 
 ]
 
