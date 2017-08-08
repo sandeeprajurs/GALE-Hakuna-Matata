@@ -174,7 +174,7 @@ public class ActionMethods {
 	
 	public static void presenceOfElement(WebDriver driver,String action,String locatorName,String locatorData,String testdata,ExtentTest testReport){
 		try{
-		WebDriverWait wait=new WebDriverWait(driver,3);
+		WebDriverWait wait=new WebDriverWait(driver,10);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
 		WebElement webElement = driver.findElement(new LocatorClass().getLocator(locatorName,locatorData));
 		if(webElement.getText().equals(testdata)){
