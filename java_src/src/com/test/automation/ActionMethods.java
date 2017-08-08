@@ -154,11 +154,13 @@ public class ActionMethods {
 	    	 rs = st.executeQuery(sqlQuery);
 	    	 ActionClass ac=new ActionClass();
 	    	 while(rs.next()){
-	    	 String desc=rs.getString("description");
+	    		String desc=rs.getString("description");
 				String actionType=rs.getString("action");
 				String locators=rs.getString("locators");
 				String locatorName=rs.getString("element_identifier");
 				String testData=rs.getString("element_value");
+				String msg=desc+" :: "+action+" :: "+locators+" :: "+locatorName+" :: "+testData;
+				testReport.log(LogStatus.INFO,msg);
 				ac.callActionMethods(driver,actionType,locators,locatorName,testData,c,testReport,usecase_id);
 	    	 }
 	    	 }
