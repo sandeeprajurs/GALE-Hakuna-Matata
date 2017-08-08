@@ -93,7 +93,7 @@ public synchronized static void triggerSelenium(String ucid,String browser){
 		try {
 			stmt2=c.createStatement();
 			System.out.println(useCaseSplit[1]);
-	        String ucQuery="select usecase_id from qa_app_jobusecases where job_id="+useCaseSplit[1]+";";
+	        String ucQuery="select usecase_id from qa_app_jobusecases where job_id="+useCaseSplit[1]+" Order by seq;";
 	        rs2=stmt2.executeQuery(ucQuery);
 	        int count=0;
 	        System.out.println(rs2);
