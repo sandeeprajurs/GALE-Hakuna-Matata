@@ -72,6 +72,15 @@ public class ActionClass {
 		  case "CLEARTEXT":
 			  ActionMethods.clearText(driver, locatorName, locatorData, testReport);
 			  break;
+		 
+		  case "GETTEXT":
+			  ActionMethods.getText(driver, locatorName, locatorData, testReport);
+		
+		  case "CLICKONENTER":
+		  	  ActionMethods.ClickonEnter(driver, locatorName, locatorData, testReport);
+		  
+		  case "CLICKONTAB":
+			  ActionMethods.ClickonTAB(driver, locatorName, locatorData, testReport);
 		      
 		}
 		

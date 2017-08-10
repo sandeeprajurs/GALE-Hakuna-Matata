@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -268,6 +269,48 @@ public class ActionMethods {
 		testReport.log(LogStatus.PASS,"Mouse over operation done successfully");
 	
  }
+    //only gets the text
+    public static void getText(WebDriver driver,String locatorName,String locatorData,ExtentTest testReport){
+    	String text = null;
+    	try{
+    		WebDriverWait wait=new WebDriverWait(driver,10);
+    		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
+    		text=driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).getText();
+    	}
+    	catch(Exception e){
+    		testReport.log(LogStatus.FAIL,"Not able to get text");
+    		testReport.log(LogStatus.FAIL,e.getMessage().toString());
+    	}
+    	testReport.log(LogStatus.PASS,"Text is "+text);
+    }
+    
+    public static void ClickonEnter(WebDriver driver,String locatorName,String locatorData,ExtentTest testReport){
+    	try{
+    	WebDriverWait wait=new WebDriverWait(driver,10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
+		driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).sendKeys(Keys.ENTER);
+    	}
+    	catch(Exception e){
+    	testReport.log(LogStatus.FAIL,"Not able to click on enter button");
+    	testReport.log(LogStatus.FAIL,e.getMessage().toString());
+    	}
+    	
+    	testReport.log(LogStatus.PASS,"clicked on enter button successfully");
+    }
+    
+    public static void ClickonTAB(WebDriver driver,String locatorName,String locatorData,ExtentTest testReport){
+    	try{
+    	WebDriverWait wait=new WebDriverWait(driver,10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
+		driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).sendKeys(Keys.TAB);
+    	}
+    	catch(Exception e){
+    	testReport.log(LogStatus.FAIL,"Not able to click on enter button");
+    	testReport.log(LogStatus.FAIL,e.getMessage().toString());
+    	}
+    	
+    	testReport.log(LogStatus.PASS,"clicked on enter button successfully");
+    }
     
     //used to clear text in the text field
     public static void clearText(WebDriver driver,String locatorName,String locatorData,ExtentTest testReport){
