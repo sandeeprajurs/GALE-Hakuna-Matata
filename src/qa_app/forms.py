@@ -20,6 +20,9 @@ ACTION_CHOICES = [
     ["HOVERON", "Hoveron"],
     ["ENTERDYNAMICTEXT", "Enter Dynamic Text"],
 	["CLEARTEXT","Clear Text"],
+    ["GETTEXT","Get Text"],
+	["CLICKONENTER","Click on Enter"],
+	["CLICKONTAB","Click on TAB"],
 
 ]
 
