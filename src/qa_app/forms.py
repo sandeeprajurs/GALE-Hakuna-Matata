@@ -23,7 +23,9 @@ ACTION_CHOICES = [
     ["GETTEXT","Get Text"],
 	["CLICKONENTER","Click on Enter"],
 	["CLICKONTAB","Click on TAB"],
-
+	["STOREDATAINVARIABLE","Store Data In Variable"],
+	["GETDATAFROMVARIABLE","Get Data From Variable"],
+	["GETVALUE","Get Element Value"],
 ]
 
 LOCATORS_CHOICES = [

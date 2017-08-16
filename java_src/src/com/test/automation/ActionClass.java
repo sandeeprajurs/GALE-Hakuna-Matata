@@ -74,14 +74,28 @@ public class ActionClass {
 			  break;
 		 
 		  case "GETTEXT":
-			  ActionMethods.getText(driver, locatorName, locatorData, testReport);
+			  ActionMethods.getText(driver, locatorName, locatorData,testData, testReport);
+			  break;
 		
 		  case "CLICKONENTER":
 		  	  ActionMethods.ClickonEnter(driver, locatorName, locatorData, testReport);
+		  	  break;
 		  
 		  case "CLICKONTAB":
 			  ActionMethods.ClickonTAB(driver, locatorName, locatorData, testReport);
-		      
+			  break;
+			  	  
+		  case "STOREDATAINVARIABLE":
+			  ActionMethods.storeDataInVariable(driver, locatorName, locatorData, testData, testReport);
+			  break;
+		  
+		  case "GETDATAFROMVARIABLE":
+			  ActionMethods.getDataFromVariable(driver, locatorName, locatorData, testData, testReport);
+			  break;
+			  
+		  case "GETVALUE":
+			  ActionMethods.getValue(driver, locatorName, locatorData, testData, testReport);
+			  break;
 		}
 		
 	}

@@ -5,7 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
@@ -19,7 +22,7 @@ import com.relevantcodes.extentreports.LogStatus;
 
 
 public class ActionMethods {
-   
+	public static Map<String,String> map=new HashMap<String,String>();  
 	public static void clickit(WebDriver driver,String action,String locatorName,String locatorData,ExtentTest testReport){
 		try {
 			WebDriverWait wait=new WebDriverWait(driver,10);
@@ -30,12 +33,18 @@ public class ActionMethods {
 			testReport.log(LogStatus.FAIL,"Click operation failed"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
 
-			
 			return;
 		}
 		testReport.log(LogStatus.PASS,"Clicked successfully");
 	}
 	public static void sendkeys(WebDriver driver,String action,String locatorName,String locatorData,String testdata,ExtentTest testReport){
+		String[] data=null;
+		if(testdata.length()>=4 && testdata.substring(0,4).equalsIgnoreCase("var_")){
+			data =testdata.split("_");
+			if(data[0].equalsIgnoreCase("var")){
+				testdata= map.get(data[1]);
+			}
+		}
 		try {
 			WebDriverWait wait=new WebDriverWait(driver,10);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
@@ -68,7 +77,7 @@ public class ActionMethods {
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			if(testdata==null)
+			if(testdata.equals(""))
 			testReport.log(LogStatus.FAIL,"Not able to input the text: "+tempData);
 			else
 			testReport.log(LogStatus.FAIL,"Not able to input the text: "+tempData+testdata);	
@@ -82,6 +91,13 @@ public class ActionMethods {
 	}
 	
 	public static void dropdown(WebDriver driver,String action,String locatorName,String locatorData,String dropdownvalue,ExtentTest testReport){
+		String[] data=null;
+		if(dropdownvalue.length()>=4 && dropdownvalue.substring(0,4).equalsIgnoreCase("var_")){
+			data =dropdownvalue.split("_");
+			if(data[0].equalsIgnoreCase("var")){
+				dropdownvalue= map.get(data[1]);
+			}
+		}
 		try {
 			WebDriverWait wait=new WebDriverWait(driver,10);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));	
@@ -111,7 +127,7 @@ public class ActionMethods {
 			
 			List<WebElement> optionsToSelect = autoOptions.findElements(By.tagName(str[2]));
 			for(WebElement option : optionsToSelect){
-		        if(option.getText().equals(lookupValue)) {
+		        if(option.getText().contains(lookupValue)) {
 		        	
 		            option.click();
 		            break;
@@ -127,7 +143,13 @@ public class ActionMethods {
 		testReport.log(LogStatus.PASS,"Successfully selected ");
 	}
 	public static void URL(WebDriver driver,String action,String testdata,ExtentTest testReport){
-		
+		String[] data=null;
+		if(testdata.length()>=4 && testdata.substring(0,4).equalsIgnoreCase("var_")){
+			data =testdata.split("_");
+			if(data[0].equalsIgnoreCase("var")){
+				testdata= map.get(data[1]);
+			}
+		}
 		try {
 			driver.get(testdata);
 		} catch (Exception e) {
@@ -176,11 +198,19 @@ public class ActionMethods {
 	}
 	
 	public static void presenceOfElement(WebDriver driver,String action,String locatorName,String locatorData,String testdata,ExtentTest testReport){
+		String[] data = null;
 		try{
 		WebDriverWait wait=new WebDriverWait(driver,10);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
-		WebElement webElement = driver.findElement(new LocatorClass().getLocator(locatorName,locatorData));
-		if(webElement.getText().equals(testdata)){
+		String text = driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).getText();
+		if(testdata.length()>=4 && testdata.substring(0,4).equalsIgnoreCase("var_")){
+			data =testdata.split("_");
+			if(data[0].equalsIgnoreCase("var")){
+				testdata= map.get(data[1]);
+			}
+		}
+
+		if(text.equals(testdata)){
 			
 			testReport.log(LogStatus.PASS,"Element "+testdata+" is present");	
 		}
@@ -188,6 +218,7 @@ public class ActionMethods {
 			
 			testReport.log(LogStatus.FAIL,"Element "+testdata+" is not present"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);	
 		}
+	
 		}
 		catch(Exception e){
 			
@@ -210,31 +241,67 @@ public class ActionMethods {
 		
 	}
 	
-	public static void getPageTitle(WebDriver driver,String action,String locatorName,String locatorData,String testdata,ExtentTest testReport){
+	public static void getPageTitle(WebDriver driver,String action,String locatorName,String locatorData,String testData,ExtentTest testReport){
 		String title=driver.getTitle();
-		if(!testdata.equals(null))
-		{
-			if(title.equals(testdata))
-				testReport.log(LogStatus.PASS,"Actual Page Title:"+title+" :: Expected Page Title:"+testdata);	
-			else
-				testReport.log(LogStatus.FAIL,"Actual Page Title:"+title+" :: Expected Page Title:"+testdata);
-			
-		}
-		else
-			testReport.log(LogStatus.INFO,"Page Title:"+title);
+		String[] data = null;
+			if(!testData.equals("")){
+				if(testData.length()>=4 && testData.substring(0,4).equalsIgnoreCase("var_")){
+	    			data =testData.split("_");
+	    			if(data[0].equalsIgnoreCase("var")){
+	    				map.put(data[1], title);
+	    				testReport.log(LogStatus.PASS,"The text :"+title+" has stored successfully in the variable :"+data[1]);
+	    				return;
+	    			}
+	    			else{
+	    				testReport.log(LogStatus.PASS,"The "+data+" is not recognised as a varible");
+	    			}
+	    			}
+				else{
+					if(title.equals(testData)){
+						testReport.log(LogStatus.PASS,"Actual Page Title:"+title+" :: Expected Page Title:"+testData);
+						return;
+					}
+					else{
+						testReport.log(LogStatus.FAIL,"Actual Page Title:"+title+" :: Expected Page Title:"+testData);
+						return;
+					}
+				}
+			}
+				else{
+					testReport.log(LogStatus.INFO,"Page Title:"+title);
+			}
+									
 	}
 	
-	public static void getPageURL(WebDriver driver,String action,String locatorName,String locatorData,String testdata,ExtentTest testReport){
+	public static void getPageURL(WebDriver driver,String action,String locatorName,String locatorData,String testData,ExtentTest testReport){
 		String url=driver.getCurrentUrl();
-		if(!testdata.equals(null))
+		String[] data = null;
+		if(!testData.equals(""))
 		{
-			if(url.equals(testdata))
-				testReport.log(LogStatus.PASS,"Actual Page URL:"+url+" :: Expected Page URL:"+testdata);	
-			else
-				testReport.log(LogStatus.FAIL,"Actual Page URL:"+url+" :: Expected Page URL:"+testdata);
+			if(testData.length()>=4 && testData.substring(0,4).equalsIgnoreCase("var_")){
+    			data =testData.split("_");
+    			if(data[0].equalsIgnoreCase("var")){
+    				map.put(data[1], url);
+    				testReport.log(LogStatus.PASS,"The text :"+url+" has stored successfully in the variable :"+data[1]);
+    				return;
+    			}
+    			else{
+    				testReport.log(LogStatus.PASS,"The "+data+" is not recognised as a varible");
+    			}
+    			}
 			
+			else{
+			if(url.equals(testData)){
+				testReport.log(LogStatus.PASS,"Actual Page URL:"+url+" :: Expected Page URL:"+testData);
+				return;
+			}
+			else{
+				testReport.log(LogStatus.FAIL,"Actual Page URL:"+url+" :: Expected Page URL:"+testData);
+				return;
+			}
 		}
-		else
+	 }
+ 		else
 			testReport.log(LogStatus.INFO,"Page URL:"+url);
 	}
 	
@@ -270,18 +337,44 @@ public class ActionMethods {
 	
  }
     //only gets the text
-    public static void getText(WebDriver driver,String locatorName,String locatorData,ExtentTest testReport){
-    	String text = null;
+    public static void getText(WebDriver driver,String locatorName,String locatorData,String testData,ExtentTest testReport){
+    	String[] data=null;
+    	String value = null;
     	try{
     		WebDriverWait wait=new WebDriverWait(driver,10);
     		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
-    		text=driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).getText();
+    		value=driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).getText();
+    		if(!testData.equals("")){
+    			if(testData.length()>=4 && testData.substring(0,4).equalsIgnoreCase("var_")){
+    			data =testData.split("_");
+    			if(data[0].equalsIgnoreCase("var")){
+    				map.put(data[1], value);
+    				testReport.log(LogStatus.PASS,"The text :"+value+" has stored successfully in the variable :"+data[1]);
+    				return;
+    			}
+    			else{
+    				testReport.log(LogStatus.PASS,"The "+data+" is not recognised as a varible");
+    			}
+    			}
+    			else{
+    	    		if(value.equals(testData)){
+    	    			testReport.log(LogStatus.PASS,"The text is :"+value+" equal to the expected text :"+testData);
+    	    			return;
+    	    		}
+    	    		else{
+    	    			testReport.log(LogStatus.FAIL,"The text is :"+value+" not equal to the text value :"+testData);
+    	    			return;
+    	    		}
+    				}
+    		}
     	}
+    	
     	catch(Exception e){
     		testReport.log(LogStatus.FAIL,"Not able to get text");
     		testReport.log(LogStatus.FAIL,e.getMessage().toString());
+    		return;
     	}
-    	testReport.log(LogStatus.PASS,"Text is "+text);
+    	testReport.log(LogStatus.PASS,"Text is "+value);
     }
     
     public static void ClickonEnter(WebDriver driver,String locatorName,String locatorData,ExtentTest testReport){
@@ -293,6 +386,7 @@ public class ActionMethods {
     	catch(Exception e){
     	testReport.log(LogStatus.FAIL,"Not able to click on enter button");
     	testReport.log(LogStatus.FAIL,e.getMessage().toString());
+    	return;
     	}
     	
     	testReport.log(LogStatus.PASS,"clicked on enter button successfully");
@@ -307,6 +401,7 @@ public class ActionMethods {
     	catch(Exception e){
     	testReport.log(LogStatus.FAIL,"Not able to click on enter button");
     	testReport.log(LogStatus.FAIL,e.getMessage().toString());
+    	return;
     	}
     	
     	testReport.log(LogStatus.PASS,"clicked on enter button successfully");
@@ -321,9 +416,95 @@ public class ActionMethods {
      }
      catch(Exception e){
     	 testReport.log(LogStatus.FAIL,"Not able to clear text");
+    	 return;
      }
          testReport.log(LogStatus.PASS,"Cleared text successfully");
 		
     }
+    
+    public static void storeDataInVariable(WebDriver driver,String locatorName,String key,String value,ExtentTest testReport){
+    	 map.put(key, value);
+    	 if(key.equals("") && value.equals("")){
+    		 testReport.log(LogStatus.FAIL,"Please specify key and value for creating a variable");
+    	 }
+    	 else
+    	 if(key.equals("")){
+    		 testReport.log(LogStatus.FAIL,"Please specify key for variable"); 
+    	 }
+    	 else if(value.equals("")){
+    		 testReport.log(LogStatus.FAIL,"Please specify value for variable");	 
+    	 }
+    	 else
+    	 testReport.log(LogStatus.PASS,"Stored "+value+" in "+key+" variable");
+    }
+    
+    //variable name should be var_variablename
+    public static void getValue(WebDriver driver,String locatorName,String locatorData,String testData,ExtentTest testReport){
+    	String value="";
+    	String[] data=null;
+    	
+    	try{
+    	WebDriverWait wait=new WebDriverWait(driver,10);
+		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
+		value=driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).getAttribute("value");
+		if(!testData.equals("")){
+			if(testData.length()>=4 && testData.substring(0,4).equalsIgnoreCase("var_")){
+			data =testData.split("_");
+			if(data[0].equalsIgnoreCase("var")){
+				map.put(data[1], value);
+				testReport.log(LogStatus.PASS,"The value :"+value+" has stored successfully in the variable :"+data[1]);
+				return;
+			}
+			else{
+				testReport.log(LogStatus.PASS,"The "+data+" is not recognised as a varible");
+			}
+			}
+			else{
+    		if(value.equals(testData)){
+    			testReport.log(LogStatus.PASS,"The value is :"+value+" equal to the expected value :"+testData);
+    			return;
+    		}
+    		else{
+    			testReport.log(LogStatus.FAIL,"The value is :"+value+" not equal to the expected value :"+testData);
+    			return;
+    		}
+			}
+		}
+    	}
+
+    	catch(Exception e){
+    		testReport.log(LogStatus.FAIL,"Not able to get the value");
+    		testReport.log(LogStatus.FAIL,e.getMessage().toString());
+    		return;
+    	}
+    	testReport.log(LogStatus.PASS,"The value is :"+value);
+    	}
 	
+    public static void getDataFromVariable(WebDriver driver,String locatorName,String key,String value,ExtentTest testReport){
+    try{
+   	 String storedValue=map.get(key);
+  
+	 if(key.equals("")){
+		 testReport.log(LogStatus.FAIL,"Please specify key for variable"); 
+	 }
+	 
+	else 
+    if(!value.equals("")){
+    	
+   		if(storedValue.equals(value)){
+   			testReport.log(LogStatus.PASS,"Stored value of variable "+key+" is: "+storedValue+", and expected value is: "+value);
+   		}
+   		else{
+   			testReport.log(LogStatus.FAIL,"Stored value of variable "+key+" is: "+storedValue+", and expected value is: "+value);
+   		}
+   	 }
+   	 else{
+   	 testReport.log(LogStatus.INFO,"Value stored in "+key+" is :"+storedValue);
+   	 }
+    }
+    catch(Exception e){
+    testReport.log(LogStatus.INFO,"variable name "+key+" is not present");
+    }
+    
+}
 }
