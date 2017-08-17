@@ -13,6 +13,8 @@
                     <tr>
                       <th>Usecase</th>
                       <th>Reports</th>
+                      <th>Time</th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -23,6 +25,9 @@
                         </td>
                         <td>
                           <a href="{% url 'hakuna_matata:view_report' usecase.id %}">View</a>
+                        </td>
+                        <td>
+                        {{usecase.time}}
                         </td>
                     </tr>
                   {% endfor %}
