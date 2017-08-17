@@ -9,24 +9,22 @@
 
             <div class="panel-body row">
              <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Usecase</th>
-                      <th>Reports</th>
-                    </tr>
-                  </thead>
-                  <tbody>
+                <thead>
+                  <tr>
+                    <th>Usecase</th>
+                    <th>Reports</th>
+                    <th>Time</th>
+                  </tr>
+                </thead>
+                <tbody>
                   {% for usecase in all_reports %}
                     <tr>
-                        <td>
-                          {{usecase.use_case}}
-                        </td>
-                        <td>
-                          <a href="{% url 'hakuna_matata:view_report' usecase.id %}">View</a>
-                        </td>
+                        <td>{{usecase.use_case}}</td>
+                        <td><a href="{% url 'hakuna_matata:view_report' usecase.id %}">View</a></td>
+                        <td>{{usecase.time}}</td>
                     </tr>
                   {% endfor %}
-                  </tbody>
+                </tbody>
               </table>
             </div>
            </div>
