@@ -130,6 +130,32 @@ def add_usecases_view(request, project_id):
     return HttpResponseRedirect(reverse_lazy('hakuna_matata:usecases', kwargs={'project_id': project_id}))
 
 
+def clone_usecase_view(request, project_id, use_id):
+    """View to clone the usecases."""
+
+    usecase_form = UsecaseForm(data=request.POST)
+    if usecase_form.is_valid():
+        clean_data = usecase_form.cleaned_data
+        if any(clean_data.values()):
+            project = Project.objects.get(id=project_id)
+            usecase_object = UseCase.objects.create(project=project, use_case_name=clean_data['use_case_name'], use_case_description=clean_data['use_case_description'])
+            usecase_object.save()
+            id = usecase_object.id
+            actions_obj = Action.objects.filter(use_case__id=use_id).order_by('seq')
+            for act in actions_obj.all():
+                action_obj = Action()
+                action_obj.seq = int(act.seq)
+                action_obj.use_case = usecase_object
+                action_obj.description = act.description
+                action_obj.action = act.action
+                action_obj.locators = act.locators
+                action_obj.element_identifier = act.element_identifier
+                action_obj.element_value = act.element_value
+                action_obj.save()
+
+    return HttpResponseRedirect(reverse_lazy('hakuna_matata:usecases', kwargs={'project_id': project_id}))
+
+
 def delete_usecases_view(request, project_id):
     """View to handle deleted usecases."""
     for usecase_id in request.POST.get('deleted_usecases', '').strip(';').split(';'):
