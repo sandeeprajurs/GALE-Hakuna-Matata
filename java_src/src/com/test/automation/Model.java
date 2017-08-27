@@ -38,228 +38,282 @@ import jcifs.smb.SmbFile;
 import jcifs.smb.SmbFileOutputStream;
 
 
-public class Model{
-public static File file;
-public synchronized static void triggerSelenium(String ucid,String browser){
+public class Model
+{
+	public static File file;
+	public synchronized static void triggerSelenium(String ucid,String browser)
+	{
+		Statement stmt=null;
+		Statement stmt1=null;
+		Statement stmt2=null;
+		PreparedStatement pStmt=null;
+		ResultSet rs=null;
+		ResultSet rs1=null;
+		ResultSet rs2=null;
+		String useCaseName=null;
+		WebDriver driver=null;
+		ExtentReports eReport = null;
+		ExtentTest testReport;
+		String dateVar = null;
+		String initialPath=null;
+		String path = null;
+		String sourcepath=null;
+		String premanentStatus = "PASS";
+		String status=null;
+		List<String> ucidl=new ArrayList<String>();
+		int usecase_id = 0;
+		int counter = 1;
 	
+		//Browser triggereded on browser var value
+		if(browser.equalsIgnoreCase("firefox"))
+		{
+			driver = new FirefoxDriver();
+		}
+		else if(browser.equalsIgnoreCase("ie"))
+		{
+			System.setProperty("webdriver.ie.driver",Property.getPropertyValue("IEDRIVERPATH"));
+			driver = new InternetExplorerDriver();
+		}
+		else if(browser.equalsIgnoreCase("Chrome"))
+		{
+			System.setProperty("webdriver.chrome.driver",Property.getPropertyValue("CHROMEDRIVERPATH"));
+			driver = new ChromeDriver();
+		}
 	
-    Statement stmt=null;
-    Statement stmt1=null;
-    Statement stmt2=null;
-    PreparedStatement pStmt=null;
-	ResultSet rs=null;
-	ResultSet rs1=null;
-	ResultSet rs2=null;
-	String useCaseName=null;
-	WebDriver driver=null;
-	ExtentReports eReport = null;
-	ExtentTest testReport;
-	String dateVar = null;
-	String initialPath=null;
-	String path = null;
-	String sourcepath=null;
-	List<String> ucidl=new ArrayList<String>();
-	int usecase_id = 0;
-	int counter = 1;
+		//db connection
+		Helper h=new Helper();
+		Connection c=h.controller();
 	
-	//Browser triggereded on browser var value
-    if(browser.equalsIgnoreCase("firefox")){
-	driver = new FirefoxDriver();
-	}
-	else if(browser.equalsIgnoreCase("ie")){
-		System.setProperty("webdriver.ie.driver",Property.getPropertyValue("IEDRIVERPATH"));
-		driver = new InternetExplorerDriver();
-	}
-	else if(browser.equalsIgnoreCase("Chrome")){
-		System.setProperty("webdriver.chrome.driver",Property.getPropertyValue("CHROMEDRIVERPATH"));
-		driver = new ChromeDriver();
-	}
+		//getting usecase id
+		String[] useCaseSplit=ucid.split("=");
 	
-	//db connection
-	Helper h=new Helper();
-	Connection c=h.controller();
+		if(useCaseSplit[0].equals("usecase_id"))
+		{
+			String[] stl=useCaseSplit[1].split(",");
+			for(int i=0;i<stl.length;i++)
+				ucidl.add(stl[i]);
+		}
 	
-	//getting usecase id
-	String[] useCaseSplit=ucid.split("=");
-	
-	if(useCaseSplit[0].equals("usecase_id")){
-		String[] stl=useCaseSplit[1].split(",");
-		 for(int i=0;i<stl.length;i++)
-			 ucidl.add(stl[i]);
-	}
-	
-	if(useCaseSplit[0].equals("job_id")){
+		if(useCaseSplit[0].equals("job_id"))
+		{
 		   //get ucid's form job id and assign to ucidl variable
-		try {
-			stmt2=c.createStatement();
-			System.out.println(useCaseSplit[1]);
-	        String ucQuery="select usecase_id from qa_app_jobusecases where job_id="+useCaseSplit[1]+" Order by seq;";
-	        rs2=stmt2.executeQuery(ucQuery);
-	        int count=0;
-	        System.out.println(rs2);
-	        while(rs2.next()){
+			try
+			{
+				stmt2=c.createStatement();
+				System.out.println(useCaseSplit[1]);
+				String ucQuery="select usecase_id from qa_app_jobusecases where job_id="+useCaseSplit[1]+" Order by seq;";
+				rs2=stmt2.executeQuery(ucQuery);
+				int count=0;
+				System.out.println(rs2);
+				while(rs2.next())
+				{
 	        	
-	        	System.out.println("usecase id: "+rs2.getString("usecase_id"));
-	        	ucidl.add(Integer.toString(rs2.getInt("usecase_id")));
-		    	count++;
-		    }
-		    } catch (SQLException e) {
+					System.out.println("usecase id: "+rs2.getString("usecase_id"));
+					ucidl.add(Integer.toString(rs2.getInt("usecase_id")));
+					count++;
+				}
+		    } 
+			catch (SQLException e) 
+			{
 			   e.printStackTrace();
 		    }
 		}
 	
-	//no of usecaseid : no of times selenium performs actions
-	try {
-		for(String id:ucidl){
-		usecase_id=Integer.parseInt(id);
-		stmt1=c.createStatement();
-		String query1 = "SELECT use_case_name FROM qa_app_usecase Where id="+usecase_id+"; ";
-	    rs1=stmt1.executeQuery(query1);
+		//no of usecaseid : no of times selenium performs actions
+		try 
+		{
+			for(String id:ucidl)
+			{
+				usecase_id=Integer.parseInt(id);
+				stmt1=c.createStatement();
+				String query1 = "SELECT use_case_name FROM qa_app_usecase Where id="+usecase_id+"; ";
+				rs1=stmt1.executeQuery(query1);
 	   
-	    while(rs1.next()){
-	    	useCaseName=rs1.getString("use_case_name");
-	    	
-	    }
-	    
-		dateVar = new Model().getDateTime();
-		
-		
-		//for each usecase new folder for reports is created and html report will be present in it
-		if(counter==1){
-		file = new File(Property.getPropertyValue("REPORTFOLDER")+dateVar+usecase_id);
-		file.mkdir();
-		
-		eReport=new ExtentReports(Property.getPropertyValue("REPORTFOLDER") + dateVar + usecase_id + "\\" + useCaseName+usecase_id + ".html");
-        initialPath=Property.getPropertyValue("REPORTFOLDER")+dateVar+usecase_id;
-		path=initialPath+"//"+useCaseName+usecase_id+".html";
-		}
-		testReport=eReport.startTest(useCaseName);
-		    
-	    	stmt=c.createStatement(); 
-	    	String query = "Select description,action,locators,element_identifier,element_value from qa_app_action where use_case_id="+usecase_id+" Order by seq";
-	    	
-	    	rs = stmt.executeQuery(query);
-	    	
-			driver.manage().window().maximize();
-			driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS) ;
-			
-			
-			ActionClass ac=new ActionClass();
-			while(rs.next()){
-				
-				String desc=rs.getString("description");
-				String action=rs.getString("action");
-				String locators=rs.getString("locators");
-				String locatorName=rs.getString("element_identifier");
-				String testData=rs.getString("element_value");
-				String msg=desc+" :: "+action+" :: "+locators+" :: "+locatorName+" :: "+testData;
-				testReport.log(LogStatus.INFO,msg);
-				ac.callActionMethods(driver,action,locators,locatorName,testData,c,testReport,usecase_id);
-				
-				
-			}
-			  eReport.flush();
-			 String url = "smb://ec2-35-161-177-204.us-west-2.compute.amazonaws.com//Share//";
-			 if(counter==1){
-			 sourcepath=dateVar + usecase_id+"//"+useCaseName+usecase_id+".html";
-			 }
-			try {
-				NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
-				SmbFile dir = new SmbFile(url+dateVar +usecase_id, auth);	
-				dir.mkdir();
-				Path source = Paths.get(path);
-				SmbFile newFile = new SmbFile(url+sourcepath,auth);
-				try (OutputStream out = newFile.getOutputStream())
+				while(rs1.next())
 				{
-				    Files.copy(source, out);
+					useCaseName=rs1.getString("use_case_name");
+	    	
 				}
+	    
+				dateVar = new Model().getDateTime();
+		
+		
+				//for each usecase new folder for reports is created and html report will be present in it
+				if(counter==1)
+				{
+					file = new File(Property.getPropertyValue("REPORTFOLDER")+dateVar+usecase_id);
+					file.mkdir();
+		
+					eReport=new ExtentReports(Property.getPropertyValue("REPORTFOLDER") + dateVar + usecase_id + "\\" + useCaseName+usecase_id + ".html");
+					initialPath=Property.getPropertyValue("REPORTFOLDER")+dateVar+usecase_id;
+					path=initialPath+"//"+useCaseName+usecase_id+".html";
 				}
-				catch (MalformedURLException e1) {
-				// TODO Auto-generated catch block
-				  e1.printStackTrace();
-				} catch (SmbException e) {
-					// TODO Auto-generated catch block
+				testReport=eReport.startTest(useCaseName);
+		    
+				stmt=c.createStatement(); 
+				String query = "Select description,action,locators,element_identifier,element_value from qa_app_action where use_case_id="+usecase_id+" Order by seq";
+	    	
+				rs = stmt.executeQuery(query);
+	    	
+				driver.manage().window().maximize();
+				driver.manage().timeouts().implicitlyWait(20,TimeUnit.SECONDS) ;
+			
+			
+				ActionClass ac=new ActionClass();
+				while(rs.next())
+				{
+				
+					String desc=rs.getString("description");
+					String action=rs.getString("action");
+					String locators=rs.getString("locators");
+					String locatorName=rs.getString("element_identifier");
+					String testData=rs.getString("element_value");
+					String msg=desc+" :: "+action+" :: "+locators+" :: "+locatorName+" :: "+testData;
+					testReport.log(LogStatus.INFO,msg);
+					if(premanentStatus.equals("PASS"))
+					{
+						status = ac.callActionMethods(driver,action,locators,locatorName,testData,c,testReport,usecase_id);
+						System.out.println("status is "+status);
+						if(status.equals("FAIL"))
+							premanentStatus = "FAIL"; //I WILL GIVE PERMANAENT STATUS TO YOU
+					}
+					else
+					{
+						ac.callActionMethods(driver,action,locators,locatorName,testData,c,testReport,usecase_id);
+					}
+				
+				
+				}
+				eReport.flush();
+				String url = "smb://ec2-35-161-177-204.us-west-2.compute.amazonaws.com//Share//";
+				if(counter==1)
+				{
+					sourcepath=dateVar + usecase_id+"//"+useCaseName+usecase_id+".html";
+				}
+				try 
+				{
+					NtlmPasswordAuthentication auth = new NtlmPasswordAuthentication(null, "gale-ciagent", "HakunaMatata");
+					SmbFile dir = new SmbFile(url+dateVar +usecase_id, auth);	
+					dir.mkdir();
+					Path source = Paths.get(path);
+					SmbFile newFile = new SmbFile(url+sourcepath,auth);
+					try (OutputStream out = newFile.getOutputStream())
+					{
+						Files.copy(source, out);
+					}
+				}
+				catch (MalformedURLException e1) 
+				{
+					e1.printStackTrace();
+				} 
+				catch (SmbException e) 
+				{
 					e.printStackTrace();
 				} 
-				
-				catch (IOException e) {
-					// TODO Auto-generated catch block
+				catch (IOException e) 
+				{
 					e.printStackTrace();
 				}
 			counter++;
-			 
-		}  
-		
-	
-	} catch (SQLException e1) {
-		e1.printStackTrace();
-	}
+			}  
+		}
+		catch (SQLException e1)
+		{
+			e1.printStackTrace();
+		}
 	 
-     finally{ 
-    	 driver.quit();
-    	 counter=1;
-    	 ucidl=null;
-    	 try {
-     		// inserting file pathe, usecase id and timstamp to db
-    		 System.out.println(sourcepath);
- 			 pStmt=c.prepareStatement("INSERT INTO qa_app_reports (report,use_case_id,time) VALUES (?,?,?)");
- 			 pStmt.setString(1,sourcepath);
- 			 pStmt.setInt(2,usecase_id);
- 			 pStmt.setString(3,dateVar); 
- 			 pStmt.executeUpdate();
- 		     pStmt.close();
- 		} catch (SQLException e) {
- 			e.printStackTrace();
- 		}
+		finally
+		{ 
+		
+			driver.quit();
+			counter=1;
+			ucidl=null;
+			ActionMethods.map.clear();
+			try 
+			{ 
+				pStmt=c.prepareStatement("INSERT INTO qa_app_reports (report,use_case_id,time) VALUES (?,?,?)");
+				pStmt.setString(1,sourcepath);
+				pStmt.setInt(2,usecase_id);
+				pStmt.setString(3,dateVar); 
+				pStmt.executeUpdate();
+				pStmt=c.prepareStatement("UPDATE qa_app_usecase SET use_case_status = ? where id=?");
+				pStmt.setString(1, premanentStatus);
+				pStmt.setInt(2, usecase_id);
+				pStmt.executeUpdate();
+				pStmt.close();
+			} 
+			catch (SQLException e) 
+			{
+				e.printStackTrace();
+			}
     	 
-    	 if(c!=null){
-    		 try {
-				c.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-    	 }
-    	 if(stmt!=null){
-    		 try {
-				stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-    		 if(stmt1!=null){
-        		 try {
-    				stmt.close();
-    			} catch (SQLException e) {
-    				e.printStackTrace();
-    			}
-    	 }
-    	 if(rs!=null){
- 				try {
-					rs.close();
-				} catch (SQLException e) {
+			if(c!=null)
+			{
+				try 
+				{
+					c.close();
+				}
+				catch (SQLException e) 
+				{
 					e.printStackTrace();
 				}
- 				 if(rs1!=null){
- 	 				try {
- 						rs.close();
- 					} catch (SQLException e) {
- 						e.printStackTrace();
- 					}		
-    	 }
+			}
+			if(stmt!=null)
+			{
+				try 
+				{
+					stmt.close();
+				} 
+				catch (SQLException e) 
+				{
+					e.printStackTrace();
+				}
+				if(stmt1!=null)
+				{
+					try 
+					{
+						stmt.close();
+					} 
+					catch (SQLException e) 
+					{
+						e.printStackTrace();
+					}
+				}
+				if(rs!=null)
+				{
+					try 
+					{
+						rs.close();
+					} 
+					catch (SQLException e) 
+					{
+						e.printStackTrace();
+					}
+					if(rs1!=null)
+					{
+						try 
+						{
+							rs.close();
+						} 
+						catch (SQLException e)
+						{
+							e.printStackTrace();
+						}		
+					}
     	 
-     }
-    	 }
-     }
+				}
+			}
+		}
      
    
-}
+	}
 
-public String getDateTime(){
- 	
+	public String getDateTime()
+	{
 	 // Create object of SimpleDateFormat class and decide the format
 	 DateFormat dateFormat = new SimpleDateFormat("MM_dd_yyyy HH.mm.ss");
 	 Date date = new Date();
 	 String currentDate= dateFormat.format(date);
 	 return currentDate;
-	
-}
+	}
 }
