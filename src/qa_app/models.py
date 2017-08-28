@@ -43,8 +43,7 @@ class UseCase(models.Model):
     use_case_name = models.CharField(max_length=255, blank=False, verbose_name='Use Case Name')
     use_case_description = models.TextField(blank=True, verbose_name='Use Case Description', help_text='A short description of your Use Case')
     jobs = models.ManyToManyField(Jobs, through='JobUseCases')
-    use_case_status = models.CharField(max_length=255, blank=True)
-    
+
     class Meta:
         """Meta Data."""
 

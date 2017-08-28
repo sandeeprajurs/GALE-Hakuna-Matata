@@ -62,7 +62,7 @@ class UsecaseForm(forms.ModelForm):
         """Meta Data."""
 
         model = UseCase
-        fields = ['use_case_name', 'use_case_description', 'use_case_status']
+        fields = ['use_case_name', 'use_case_description']
 
 
 class ProjectForm(forms.ModelForm):
