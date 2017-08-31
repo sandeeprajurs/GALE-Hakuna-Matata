@@ -13,6 +13,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -480,7 +481,8 @@ public class ActionMethods {
     	testReport.log(LogStatus.PASS,"The value is :"+value);
     	}
 	
-    public static void getDataFromVariable(WebDriver driver,String locatorName,String key,String value,ExtentTest testReport){
+    public static void getDataFromVariable(WebDriver driver,String locatorName,String key,String value,ExtentTest testReport)
+    {
     try{
    	 String storedValue=map.get(key);
   
@@ -506,5 +508,25 @@ public class ActionMethods {
     testReport.log(LogStatus.INFO,"variable name "+key+" is not present");
     }
     
-}
+    }
+    
+    public static void dragAndDrop(WebDriver driver,String locatorName,String locatorData,ExtentTest testReport){
+		String[] fromTo=locatorData.split(",");
+		String fromAddr=fromTo[0];
+		String toAddr=fromTo[1];
+		try 
+		{
+			WebElement address1=driver.findElement(By.xpath(fromAddr));
+			WebElement address2=driver.findElement(By.xpath(toAddr));
+			Actions builder = new Actions(driver);
+			Action dragAndDrop =  builder.clickAndHold(address1).moveToElement(address2).release(address2).build();
+			dragAndDrop.perform();
+		} catch (Exception e) {
+			testReport.log(LogStatus.FAIL,"Drag and drop operation failed");
+			testReport.log(LogStatus.FAIL,e.getMessage().toString());
+			return;
+		}
+		testReport.log(LogStatus.PASS,"Drag and drop operation successfull");
+		
+	}
 }
