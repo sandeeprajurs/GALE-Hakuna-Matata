@@ -96,6 +96,9 @@ public class ActionClass {
 		  case "GETVALUE":
 			  ActionMethods.getValue(driver, locatorName, locatorData, testData, testReport);
 			  break;
+		  
+		  case "DRAGANDDROP":
+			  ActionMethods.dragAndDrop(driver, locatorName, locatorData, testReport);
 		}
 		
 	}
