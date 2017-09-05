@@ -99,6 +99,12 @@ public class ActionClass {
 		  
 		  case "DRAGANDDROP":
 			  ActionMethods.dragAndDrop(driver, locatorName, locatorData, testReport);
+			  break;
+			  
+		  case "ISEMPTY":
+			  ActionMethods.isEmpty(driver, locatorName, key, value, testReport);
+			  break;
+		
 		}
 		
 	}

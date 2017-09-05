@@ -27,6 +27,7 @@ ACTION_CHOICES = [
 	["GETDATAFROMVARIABLE","Get Data From Variable"],
 	["GETVALUE","Get Element Value"],
 	["DRAGANDDROP","Drag and Drop"],
+	["ISEMPTY", "Is Empty"],
 ]
 
 LOCATORS_CHOICES = [
