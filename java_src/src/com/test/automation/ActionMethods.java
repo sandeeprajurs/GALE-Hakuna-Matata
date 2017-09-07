@@ -32,22 +32,12 @@ public class ActionMethods
 			WebDriverWait wait=new WebDriverWait(driver,10);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
 			driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).click();
-<<<<<<< HEAD
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Click operation failed"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
-			testReport.log(LogStatus.FAIL,e.getMessage().toString());
-
-			
-			return;
-=======
 		} 
 		catch (Exception e) 
 		{
 			testReport.log(LogStatus.FAIL,"Click operation failed"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
 			return "FAIL";
->>>>>>> 93984572d8a124c1d12623453ffeb5836a803eb5
 		}
 		testReport.log(LogStatus.PASS,"Clicked successfully");
 		return "PASS";
@@ -69,14 +59,6 @@ public class ActionMethods
 			WebDriverWait wait=new WebDriverWait(driver,10);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
 			driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).sendKeys(testdata);
-<<<<<<< HEAD
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Not able to input the text"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
-			testReport.log(LogStatus.FAIL,e.getMessage().toString());
-
-			return;
-=======
 		} 
 		catch (Exception e) 
 		{
@@ -84,7 +66,6 @@ public class ActionMethods
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
 			System.out.println("FAIL");
 			return "FAIL";
->>>>>>> 93984572d8a124c1d12623453ffeb5836a803eb5
 		}
 		testReport.log(LogStatus.PASS,"Able to input the text");
 		return "PASS";	
@@ -119,13 +100,6 @@ public class ActionMethods
 			testReport.log(LogStatus.FAIL,"Not able to input the text: "+tempData+testdata);	
 			
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
-<<<<<<< HEAD
-		
-			return;
-		}
-		
-=======
->>>>>>> 93984572d8a124c1d12623453ffeb5836a803eb5
 		
 			return "FAIL";
 		}	
@@ -147,14 +121,6 @@ public class ActionMethods
 			WebDriverWait wait=new WebDriverWait(driver,10);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));	
 		    new Select(driver.findElement(new LocatorClass().getLocator(locatorName,locatorData))).selectByValue(dropdownvalue);
-<<<<<<< HEAD
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Not able to select value from dropdown"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
-			testReport.log(LogStatus.FAIL,e.getMessage().toString());
-		
-			return;
-=======
 		} 
 		catch (Exception e) 
 		{
@@ -162,7 +128,6 @@ public class ActionMethods
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
 		
 			return "FAIL";
->>>>>>> 93984572d8a124c1d12623453ffeb5836a803eb5
 		}
 		testReport.log(LogStatus.PASS,"Successfully selected ");
 		return "PASS";
@@ -192,21 +157,12 @@ public class ActionMethods
 		            break;
 		        }
 		    }
-<<<<<<< HEAD
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Not able to select value from lookup"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
-			testReport.log(LogStatus.FAIL,e.getMessage().toString());
-		
-			return;
-=======
 		} 
 		catch (Exception e) 
 		{
 			testReport.log(LogStatus.FAIL,"Not able to select value from lookup"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
 			testReport.log(LogStatus.FAIL,e.getMessage().toString());
 			return "FAIL";
->>>>>>> 93984572d8a124c1d12623453ffeb5836a803eb5
 		}
 		testReport.log(LogStatus.PASS,"Successfully selected ");
 		return "PASS";
@@ -232,11 +188,7 @@ public class ActionMethods
 			testReport.log(LogStatus.FAIL,"Not able to enter URL");
 			testReport.log(LogStatus.FAIL,e.getMessage().toString()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
 		
-<<<<<<< HEAD
-			return;
-=======
 			return "FAIL";
->>>>>>> 93984572d8a124c1d12623453ffeb5836a803eb5
 		}
 		testReport.log(LogStatus.PASS,"URL entered successfully");
 		return "PASS";
@@ -250,30 +202,6 @@ public class ActionMethods
 		Statement st=null;
 		ResultSet rs=null;
 		
-<<<<<<< HEAD
-	     try {
-	    	 
-	    	 for(int i=0;i<Integer.parseInt(input1);i++){
-	    	 st=c.createStatement();
-	    	 String sqlQuery="SELECT description, action, locators, element_identifier, element_value, seq FROM qa_app_action WHERE use_case_id = "+usecase_id+" AND seq BETWEEN '"+str[0]+"' AND '"+str[1]+"' ORDER BY seq;";
-	    	 rs = st.executeQuery(sqlQuery);
-	    	 ActionClass ac=new ActionClass();
-	    	 while(rs.next()){
-	    	 String desc=rs.getString("description");
-				String actionType=rs.getString("action");
-				String locators=rs.getString("locators");
-				String locatorName=rs.getString("element_identifier");
-				String testData=rs.getString("element_value");
-				ac.callActionMethods(driver,actionType,locators,locatorName,testData,c,testReport,usecase_id);
-	    	 }
-	    	 }
-	     }
-	     catch (SQLException e) {
-	 		// TODO Auto-generated catch block
-	    	testReport.log(LogStatus.FAIL,"Failed to Loop"+e.getMessage()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
-	 	
-	 		return;
-=======
 	    try
 	    {
 	    	for(int i=0;i<Integer.parseInt(input1);i++)
@@ -299,33 +227,11 @@ public class ActionMethods
 	    {
 	    	testReport.log(LogStatus.FAIL,"Failed to Loop"+e.getMessage()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
 	 		return "FAIL";
->>>>>>> 93984572d8a124c1d12623453ffeb5836a803eb5
 	 	}	
 	     testReport.log(LogStatus.PASS,"Looped successfully for "+Integer.parseInt(input1)+" times from "+str[0]+" to "+str[1]+"th step");
 	     	return "PASS";
 	}
 	
-<<<<<<< HEAD
-	public static void presenceOfElement(WebDriver driver,String action,String locatorName,String locatorData,String testdata,ExtentTest testReport){
-		try{
-		WebDriverWait wait=new WebDriverWait(driver,3);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
-		WebElement webElement = driver.findElement(new LocatorClass().getLocator(locatorName,locatorData));
-		if(webElement.getText().equals(testdata)){
-			
-			testReport.log(LogStatus.PASS,"Element "+testdata+" is present");	
-		}
-		else{
-			
-			testReport.log(LogStatus.FAIL,"Element "+testdata+" is not present"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);	
-		}
-		}
-		catch(Exception e){
-			
-			testReport.log(LogStatus.FAIL,"Element is not present or Invalid LocatorValue"+e.getMessage()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
-		
-			return;
-=======
 	public static String presenceOfElement(WebDriver driver,String action,String locatorName,String locatorData,String testdata,ExtentTest testReport)
 	{
 		String[] data = null;
@@ -353,7 +259,6 @@ public class ActionMethods
 				testReport.log(LogStatus.FAIL,"Element "+testdata+" is not present"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);	
 				return "FAIL";
 			}
->>>>>>> 93984572d8a124c1d12623453ffeb5836a803eb5
 		}
 		catch(Exception e)
 		{		
@@ -369,11 +274,6 @@ public class ActionMethods
 		{
 			Thread.sleep(number);
 			testReport.log(LogStatus.PASS,"Paused for "+testdata+" sec");
-<<<<<<< HEAD
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			testReport.log(LogStatus.PASS,"Paused for "+testdata+" sec");
-=======
 			return "PASS";
 		} 
 		catch (InterruptedException e) 
@@ -381,7 +281,6 @@ public class ActionMethods
 			// TODO Auto-generated catch block
 			testReport.log(LogStatus.PASS,"Paused for "+testdata+" sec");
 			return "FAIL";
->>>>>>> 93984572d8a124c1d12623453ffeb5836a803eb5
 		}
 		
 	}
@@ -480,31 +379,12 @@ public class ActionMethods
 		{
 			testReport.log(LogStatus.FAIL,"Not able to navigate back to original page");
 			testReport.log(LogStatus.FAIL,e.getMessage().toString()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
-<<<<<<< HEAD
-			
-			return;
-=======
 			return "FAIL";
->>>>>>> 93984572d8a124c1d12623453ffeb5836a803eb5
 		}
 		testReport.log(LogStatus.PASS,"Navigated back successfully");
 		return "PASS";	
     }
     
-<<<<<<< HEAD
-    public static void hoverOn(WebDriver driver,String locatorName,String locatorData,ExtentTest testReport){
-	    try {
-	
-	    	 Actions act= new Actions(driver);
-	    	 WebElement wb=driver.findElement(new LocatorClass().getLocator(locatorName,locatorData));
-	    	 act.moveToElement(wb).perform();
-	    } catch (Exception e) {
-
-			testReport.log(LogStatus.FAIL,"Not able to perform mouseOver operation");
-			testReport.log(LogStatus.FAIL,e.getMessage().toString()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
-			
-			return;
-=======
     public static String hoverOn(WebDriver driver,String locatorName,String locatorData,ExtentTest testReport)
     {
 	    try 
@@ -519,7 +399,6 @@ public class ActionMethods
 			testReport.log(LogStatus.FAIL,e.getMessage().toString()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
 			
 			return "FAIL";
->>>>>>> 93984572d8a124c1d12623453ffeb5836a803eb5
 		}
 		testReport.log(LogStatus.PASS,"Mouse over operation done successfully");
 		return "PASS";

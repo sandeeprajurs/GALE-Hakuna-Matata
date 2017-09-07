@@ -163,16 +163,6 @@ public class Model
 				while(rs.next())
 				{
 				
-<<<<<<< HEAD
-				String desc=rs.getString("description");
-				String action=rs.getString("action");
-				String locators=rs.getString("locators");
-				String locatorName=rs.getString("element_identifier");
-				String testData=rs.getString("element_value");
-				String msg=desc+" :: "+action+" :: "+locators+" :: "+locatorName+" :: "+testData;
-				testReport.log(LogStatus.INFO,msg);
-				ac.callActionMethods(driver,action,locators,locatorName,testData,c,testReport,usecase_id);
-=======
 					String desc=rs.getString("description");
 					String action=rs.getString("action");
 					String locators=rs.getString("locators");
@@ -191,7 +181,6 @@ public class Model
 					{
 						ac.callActionMethods(driver,action,locators,locatorName,testData,c,testReport,usecase_id);
 					}
->>>>>>> 93984572d8a124c1d12623453ffeb5836a803eb5
 				
 				
 				}
