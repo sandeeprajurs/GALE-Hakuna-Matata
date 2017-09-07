@@ -529,8 +529,9 @@ public class ActionMethods {
 		testReport.log(LogStatus.PASS,"Drag and drop operation successfull");
 		
 	}
-	public static void isEmpty(WebDriver driver,String locatorName,String key,String value,ExtentTest testReport){
-    		try {
+    
+    public static void isEmpty(WebDriver driver,String locatorName,String key,String value,ExtentTest testReport){
+    	try {
 			WebDriverWait wait=new WebDriverWait(driver,10);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
 			Boolean empty = driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).getText().isEmpty();
@@ -540,5 +541,5 @@ public class ActionMethods {
 			return;
 		}
 		testReport.log(LogStatus.PASS,"Field is empty.");
-    	}
+    }
 }

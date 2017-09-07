@@ -19,4 +19,5 @@ urlpatterns = (
     url(r'^view_report/(?P<report_id>\d+)$', view=views.render_report, name="view_report"),
     url(r'^add_project/$', views.add_project, name='add_project'),
     url(r'^remove_project/(?P<project_id>\d+)/$', views.remove_project, name='remove_project'),
+    url(r'^(?P<project_id>\d+)/(?P<use_id>\d+)/clone_usecase$', view=views.clone_usecase_view, name="clone_usecase"),
 )
