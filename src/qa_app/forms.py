@@ -18,8 +18,14 @@ ACTION_CHOICES = [
     ["GETPAGEURL", "Get Page URL"],
     ["NAVIGATEBACK", "Navigate Back"],
     ["HOVERON", "Hoveron"],
-    ["ENTERDYNAMICTEXT", "Enter Dynamic Text"]
-
+    ["ENTERDYNAMICTEXT", "Enter Dynamic Text"],
+	["CLEARTEXT","Clear Text"],
+    ["GETTEXT","Get Text"],
+	["CLICKONENTER","Click on Enter"],
+	["CLICKONTAB","Click on TAB"],
+	["STOREDATAINVARIABLE","Store Data In Variable"],
+	["GETDATAFROMVARIABLE","Get Data From Variable"],
+	["GETVALUE","Get Element Value"],
 ]
 
 LOCATORS_CHOICES = [
@@ -56,7 +62,7 @@ class UsecaseForm(forms.ModelForm):
         """Meta Data."""
 
         model = UseCase
-        fields = ['use_case_name', 'use_case_description']
+        fields = ['use_case_name', 'use_case_description', 'use_case_status']
 
 
 class ProjectForm(forms.ModelForm):

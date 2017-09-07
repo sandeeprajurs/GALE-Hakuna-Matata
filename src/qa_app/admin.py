@@ -26,7 +26,7 @@ class JobUseCasesInline(admin.TabularInline):
 class UseCaseAdmin(admin.ModelAdmin):
     """UseCase admin."""
 
-    list_display = ['use_case_name', 'project', 'use_case_description']
+    list_display = ['use_case_name', 'project', 'use_case_description', 'use_case_status']
     search_fields = ['project__name', 'use_case_name']
     inlines = [JobUseCasesInline]
 
