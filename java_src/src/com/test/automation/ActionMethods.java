@@ -529,4 +529,51 @@ public class ActionMethods {
 		testReport.log(LogStatus.PASS,"Drag and drop operation successfull");
 		
 	}
+    
+    public static void verifyAll(WebDriver driver,String action,String locator,String input1,Connection c,String input2,ExtentTest testReport,int usecase_id){
+    	String[] str=input2.split("-");
+		
+		Statement st=null;
+		ResultSet rs=null;
+		
+	     try {
+	    	 
+	    	 for(int i=Integer.parseInt(input1);i<Integer.parseInt(input2);i++)
+	    	 {
+	    	 st=c.createStatement();
+	    	 String sqlQuery="SELECT description, action, locators, element_identifier, element_value, seq FROM qa_app_action WHERE use_case_id = "+usecase_id+" AND seq BETWEEN '"+str[0]+"' AND '"+str[1]+"' ORDER BY seq;";
+	    	 rs = st.executeQuery(sqlQuery);
+	    	 ActionClass ac=new ActionClass();
+	    	 while(rs.next())
+	    	 {
+	    		String desc=rs.getString("description");
+				String actionType=rs.getString("action");
+				String locators=rs.getString("locators");
+				String locatorName=rs.getString("element_identifier");
+				String testData=rs.getString("element_value");
+				String msg=desc+" :: "+action+" :: "+locators+" :: "+locatorName+" :: "+testData;
+				testReport.log(LogStatus.INFO,msg);
+				String expectedValue;
+		    	if(action.equals("ENTERTEXT")){
+		    		expectedValue=driver.findElement(new LocatorClass().getLocator(locatorName,testData)).getAttribute("value");
+		    		if(expectedValue.equals(testData)){
+		    			System.out.println("Enter text passed");
+		    		}
+		    		else{
+		    			System.out.println("Enter text failed");
+		    		}
+				
+	    	 }
+	    	 }
+	    	 }
+	     }
+	     catch (SQLException e) {
+	 		// TODO Auto-generated catch block
+	    	testReport.log(LogStatus.FAIL,"Failed to Loop"+e.getMessage()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
+	 	
+	 		return;
+	 	}	
+    	
+    	
+    }
 }
