@@ -4,6 +4,9 @@
 from __future__ import unicode_literals
 
 import re
+import pg
+import json  
+from django.http import JsonResponse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render
@@ -13,6 +16,11 @@ from django.conf import settings
 from .models import Project, Reports, UseCase, Action, Jobs, JobUseCases
 from .forms import ActionsFormset, ProjectForm, UsecaseForm, JobsForm
 from functools import partial, wraps
+import environ
+
+
+env = environ.Env()
+environ.Env.read_env() 
 
 
 def project_view(request):
@@ -304,3 +312,28 @@ def actions_view(request, project_id, usecase_id):
                             element_value=action['element_value'],
                         )
         return HttpResponseRedirect(reverse_lazy('hakuna_matata:actions', kwargs={'project_id': project_id, 'usecase_id': usecase_id}))
+
+
+def get_data_from_DB(request, usecase_id):
+    hostname =  env('DB_HOST', default='localhost')
+    username =  env('DB_USERNAME', default='local_user')
+    password =  env('DB_PASSWORD', default='local_password')
+    database =  env('DB_NAME', default='local_db')
+    conn = pg.connect(host=hostname, user=username, passwd=password, dbname=database)
+    result = conn.query( "select description, action, locators, element_identifier, element_value, use_case_id, seq from qa_app_action where use_case_id="+usecase_id+";" )
+    
+    data = {}
+    for description, action, locators, element_identifier, element_value, use_case_id, seq in result.getresult():
+        children = [] 
+        children.append({"description":description, "action":action, "locators":locators, "element_identifier":element_identifier, "element_value":element_value, "use_case_id":use_case_id })   
+        data[seq] = children
+    filePathNameWExt = './sandeepjson.json'
+
+    with open(filePathNameWExt, 'w') as fp:
+        json.dump(data, fp)
+
+    conn.close()
+    response = HttpResponse(open(filePathNameWExt,"rb"), content_type='application/zip')
+    response['Content-Disposition'] = 'attachment; filename=myfile.json'
+    return response
+
