@@ -28,7 +28,9 @@ ACTION_CHOICES = [
 	["GETVALUE","Get Element Value"],
 	["DRAGANDDROP","Drag and Drop"],
 	["VERIFYALL","Verify All"],
-    ["VERIFYCHECKBOX","Verify Checkbox"]
+    ["VERIFYCHECKBOX","Verify Checkbox"],
+	["ISEMPTY", "Is Empty"],
+
 ]
 
 LOCATORS_CHOICES = [
