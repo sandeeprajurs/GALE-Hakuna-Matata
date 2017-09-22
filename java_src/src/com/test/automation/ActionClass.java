@@ -99,9 +99,15 @@ public class ActionClass {
 		  
 		  case "DRAGANDDROP":
 			  ActionMethods.dragAndDrop(driver, locatorName, locatorData, testReport);
+			  break;
 			  
 		  case "VERIFYALL":
 			  ActionMethods.verifyAll(driver, actionName, locatorName, locatorData, c, testData, testReport, usecase_id);
+			  break;
+
+		  case "VERIFYCHECKBOX":
+			  ActionMethods.verifyCheckBox(driver, locatorName, locatorData, testData, testReport);
+			  break;
 		}
 		
 	}
