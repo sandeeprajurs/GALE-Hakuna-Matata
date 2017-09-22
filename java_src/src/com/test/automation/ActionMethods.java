@@ -20,15 +20,17 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import com.relevantcodes.extentreports.ExtentTest;
 import com.relevantcodes.extentreports.LogStatus;
+import org.openqa.selenium.JavascriptExecutor;
 
 
 public class ActionMethods {
 	public static Map<String,String> map=new HashMap<String,String>();  
 	public static void clickit(WebDriver driver,String action,String locatorName,String locatorData,ExtentTest testReport){
 		try {
-			WebDriverWait wait=new WebDriverWait(driver,10);
+			WebDriverWait wait=new WebDriverWait(driver,5);
 			wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
-			driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).click();
+			 WebElement ele=driver.findElement(new LocatorClass().getLocator(locatorName,locatorData));
+			    ((JavascriptExecutor) driver).executeScript("arguments[0].click();",ele);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			testReport.log(LogStatus.FAIL,"Click operation failed"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
@@ -115,33 +117,20 @@ public class ActionMethods {
 	
 	//for lookup locator value:  xpath,id,tag
 	public static void lookup(WebDriver driver,String action,String locatorName,String locatorData,String lookupValue,ExtentTest testReport){
-		try {
-			String[] str=locatorData.split(",");
-			
-			WebDriverWait wait=new WebDriverWait(driver,10);
-			wait.until(ExpectedConditions.visibilityOf(driver.findElement(new LocatorClass().getLocator(locatorName,str[0]))));	
-			WebElement webElement = driver.findElement(new LocatorClass().getLocator(locatorName,str[0]));
-			webElement.sendKeys(Character.toString(lookupValue.charAt(0)));
-			
-			WebElement autoOptions = driver.findElement(By.id(str[1]));
-			wait.until(ExpectedConditions.visibilityOf(autoOptions));
-			
-			List<WebElement> optionsToSelect = autoOptions.findElements(By.tagName(str[2]));
-			for(WebElement option : optionsToSelect){
-		        if(option.getText().contains(lookupValue)) {
-		        	
-		            option.click();
-		            break;
-		        }
-		    }
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			testReport.log(LogStatus.FAIL,"Not able to select value from lookup"/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
-			testReport.log(LogStatus.FAIL,e.getMessage().toString());
-		
-			return;
+		try
+		{
+			WebElement ele = driver.findElement(new LocatorClass().getLocator(locatorName,locatorData));
+			ele.sendKeys(lookupValue);
+	    	Thread.sleep(2000);
+			ele.sendKeys(Keys.ARROW_DOWN);
+			ele.sendKeys(Keys.ENTER);
+			testReport.log(LogStatus.PASS, "Value from lookup got Selected");
 		}
-		testReport.log(LogStatus.PASS,"Successfully selected ");
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+			testReport.log(LogStatus.FAIL, "Value from lookup not Selected");
+		}
 	}
 	public static void URL(WebDriver driver,String action,String testdata,ExtentTest testReport){
 		String[] data=null;
@@ -445,7 +434,7 @@ public class ActionMethods {
     	String[] data=null;
     	
     	try{
-    	WebDriverWait wait=new WebDriverWait(driver,10);
+    	WebDriverWait wait=new WebDriverWait(driver,2);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
 		value=driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).getAttribute("value");
 		if(!testData.equals("")){
@@ -475,7 +464,6 @@ public class ActionMethods {
 
     	catch(Exception e){
     		testReport.log(LogStatus.FAIL,"Not able to get the value");
-    		testReport.log(LogStatus.FAIL,e.getMessage().toString());
     		return;
     	}
     	testReport.log(LogStatus.PASS,"The value is :"+value);
@@ -530,6 +518,25 @@ public class ActionMethods {
 		
 	}
     
+    public static void verifyCheckBox(WebDriver driver,String locatorName,String locatorData,String value,ExtentTest testReport){
+    try{
+    boolean b = driver.findElement(new LocatorClass().getLocator(locatorName,locatorData+"/../input")).isSelected();
+    String actual1 = String.valueOf(b);					
+	if (actual1.equalsIgnoreCase(value))
+	{
+		testReport.log(LogStatus.PASS, "checkbox is selected");
+	} 
+	else
+	{
+		testReport.log(LogStatus.FAIL, "checkbox is not selected");
+	}
+    }
+    catch (Exception e) {
+    testReport.log(LogStatus.FAIL,"Check box is not selected");
+	}
+ 
+    }
+    
     public static void verifyAll(WebDriver driver,String action,String locator,String input1,Connection c,String input2,ExtentTest testReport,int usecase_id){
     	String[] str=input2.split("-");
 		
@@ -563,7 +570,7 @@ public class ActionMethods {
 		    			System.out.println("Enter text failed");
 		    		}
 				
-	    	 }
+		    	}
 	    	 }
 	    	 }
 	     }
