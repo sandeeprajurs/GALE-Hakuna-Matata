@@ -101,10 +101,20 @@ public class ActionClass {
 			  ActionMethods.dragAndDrop(driver, locatorName, locatorData, testReport);
 			  break;
 			  
+
+		  case "VERIFYALL":
+			  ActionMethods.verifyAll(driver, actionName, locatorName, locatorData, c, testData, testReport, usecase_id);
+			  break;
+
+		  case "VERIFYCHECKBOX":
+			  ActionMethods.verifyCheckBox(driver, locatorName, locatorData, testData, testReport);
+			  break;
+
 		  case "ISEMPTY":
-			  ActionMethods.isEmpty(driver, locatorName, key, value, testReport);
+			  ActionMethods.isEmpty(driver, locatorName, locatorData, testData, testReport);
 			  break;
 		
+
 		}
 		
 	}

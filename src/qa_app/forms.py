@@ -19,15 +19,18 @@ ACTION_CHOICES = [
     ["NAVIGATEBACK", "Navigate Back"],
     ["HOVERON", "Hoveron"],
     ["ENTERDYNAMICTEXT", "Enter Dynamic Text"],
-	["CLEARTEXT","Clear Text"],
+    ["CLEARTEXT","Clear Text"],
     ["GETTEXT","Get Text"],
-	["CLICKONENTER","Click on Enter"],
-	["CLICKONTAB","Click on TAB"],
-	["STOREDATAINVARIABLE","Store Data In Variable"],
-	["GETDATAFROMVARIABLE","Get Data From Variable"],
-	["GETVALUE","Get Element Value"],
-	["DRAGANDDROP","Drag and Drop"],
-	["ISEMPTY", "Is Empty"],
+    ["CLICKONENTER","Click on Enter"],
+    ["CLICKONTAB","Click on TAB"],
+    ["STOREDATAINVARIABLE","Store Data In Variable"],
+    ["GETDATAFROMVARIABLE","Get Data From Variable"],
+    ["GETVALUE","Get Element Value"],
+    ["DRAGANDDROP","Drag and Drop"],
+    ["VERIFYALL","Verify All"],
+    ["VERIFYCHECKBOX","Verify Checkbox"],
+    ["ISEMPTY", "Is Empty"],
+
 ]
 
 LOCATORS_CHOICES = [
