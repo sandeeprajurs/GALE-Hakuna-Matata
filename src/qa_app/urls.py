@@ -20,5 +20,5 @@ urlpatterns = (
     url(r'^add_project/$', views.add_project, name='add_project'),
     url(r'^remove_project/(?P<project_id>\d+)/$', views.remove_project, name='remove_project'),
     url(r'^(?P<project_id>\d+)/(?P<use_id>\d+)/clone_usecase$', view=views.clone_usecase_view, name="clone_usecase"),
-    url(r'^import-use-case/(?P<usecase_id>\d+)$', view=views.export_usecase, name="export_usecase"),
+    url(r'^export-use-case/(?P<usecase_id>\d+)$', view=views.export_usecase, name="export_usecase"),
 )
