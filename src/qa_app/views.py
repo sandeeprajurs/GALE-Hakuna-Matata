@@ -4,7 +4,6 @@
 from __future__ import unicode_literals
 
 import re
-import pg
 import json  
 from django.http import JsonResponse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -16,11 +15,8 @@ from django.conf import settings
 from .models import Project, Reports, UseCase, Action, Jobs, JobUseCases
 from .forms import ActionsFormset, ProjectForm, UsecaseForm, JobsForm
 from functools import partial, wraps
-import environ
-
-
-env = environ.Env()
-environ.Env.read_env() 
+from django.http import JsonResponse
+from django.http import FileResponse
 
 
 def project_view(request):
@@ -314,26 +310,22 @@ def actions_view(request, project_id, usecase_id):
         return HttpResponseRedirect(reverse_lazy('hakuna_matata:actions', kwargs={'project_id': project_id, 'usecase_id': usecase_id}))
 
 
-def get_data_from_DB(request, usecase_id):
-    hostname =  env('DB_HOST', default='localhost')
-    username =  env('DB_USERNAME', default='local_user')
-    password =  env('DB_PASSWORD', default='local_password')
-    database =  env('DB_NAME', default='local_db')
-    conn = pg.connect(host=hostname, user=username, passwd=password, dbname=database)
-    result = conn.query( "select description, action, locators, element_identifier, element_value, use_case_id, seq from qa_app_action where use_case_id="+usecase_id+";" )
-    
+def export_usecase(request, usecase_id):
+    """Export db data to a json file"""
+    filtered_entries = Action.objects.filter(use_case=usecase_id)
+    usecase_name=UseCase.objects.get(id=usecase_id)
+  
     data = {}
-    for description, action, locators, element_identifier, element_value, use_case_id, seq in result.getresult():
+    for entry in filtered_entries:
         children = [] 
-        children.append({"description":description, "action":action, "locators":locators, "element_identifier":element_identifier, "element_value":element_value, "use_case_id":use_case_id })   
-        data[seq] = children
-    filePathNameWExt = './sandeepjson.json'
+        children.append({"description":entry.description, "action":entry.action, "locators":entry.locators, "element_identifier":entry.element_identifier, "element_value":entry.element_value, "use_case_id":entry.use_case_id })   
+        data[entry.seq] = children
+    filePathNameWExt = './JsonFiles/export_data.json'
 
     with open(filePathNameWExt, 'w') as fp:
         json.dump(data, fp)
 
-    conn.close()
-    response = HttpResponse(open(filePathNameWExt,"rb"), content_type='application/zip')
-    response['Content-Disposition'] = 'attachment; filename=myfile.json'
+    response = HttpResponse(open(filePathNameWExt,"rb"), content_type='application/json')
+    response['Content-Disposition'] = 'attachment; filename='+usecase_name.use_case_name+'.json'
     return response
 
