@@ -189,8 +189,22 @@ public class ActionMethods {
 	
 	public static void presenceOfElement(WebDriver driver,String action,String locatorName,String locatorData,String testdata,ExtentTest testReport){
 		String[] data = null;
-		try{
 		WebDriverWait wait=new WebDriverWait(driver,10);
+		if(testdata.equals("")){
+
+		try{
+		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
+		testReport.log(LogStatus.PASS,"Element is present");
+		return;
+			}
+		catch(Exception e){
+			testReport.log(LogStatus.FAIL,"Element is not present");
+			return;
+			}
+		}
+			
+		if(testdata!=null){
+		try{
 		wait.until(ExpectedConditions.visibilityOfElementLocated(new LocatorClass().getLocator(locatorName,locatorData)));
 		String text = driver.findElement(new LocatorClass().getLocator(locatorName,locatorData)).getText();
 		if(testdata.length()>=4 && testdata.substring(0,4).equalsIgnoreCase("var_")){
@@ -213,8 +227,9 @@ public class ActionMethods {
 		catch(Exception e){
 			
 			testReport.log(LogStatus.FAIL,"Element is not present or Invalid LocatorValue"+e.getMessage()/*+ testReport.addScreenCapture(GetScreenShot.capture(driver,new Model().getDateTime()))*/);
-		
+			
 			return;
+		}
 		}
 			
 	}
